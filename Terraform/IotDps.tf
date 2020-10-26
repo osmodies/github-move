@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "example" {
-  name     = "resourceGroup1"
-  location = "West US"
+  name     = "__resourcegroupname__"
+  location = "__resourcegrouplocation__"
 }
 
 resource "azurerm_iothub_dps" "example" {
