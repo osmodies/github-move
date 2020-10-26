@@ -1,6 +1,6 @@
 resource "azurerm_resource_group" "StorageAccount" {
-  name     = "__resourcegrouprname__"
-  location = "East US"
+  name     = "__resourcegroupname__"
+  location = "__resourcegrouplocation__"
 }
 
 resource "azurerm_storage_account" "StorageAccount" {
