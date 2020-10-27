@@ -53,7 +53,7 @@ resource "azurerm_iothub" "example" {
   endpoint {
     type                       = "AzureIotHub.StorageContainer"
     connection_string          = azurerm_storage_account.example.primary_blob_connection_string
-    name                       = "__endpointname__"
+    name                       = "__routeendpoint__"
     batch_frequency_in_seconds = __endpointbatchfrecuency__
     max_chunk_size_in_bytes    = __endpointmaxchunksize__
     container_name             = azurerm_storage_container.example.name
@@ -64,7 +64,7 @@ resource "azurerm_iothub" "example" {
   endpoint {
     type              = "AzureIotHub.EventHub"
     connection_string = azurerm_eventhub_authorization_rule.example.primary_connection_string
-    name              = "__endpointname2__"
+    name              = "__routeendpoint2__"
   }
 
   route {
@@ -79,8 +79,8 @@ resource "azurerm_iothub" "example" {
     name           = "__routename2__"
     source         = "__routesource2__"
     condition      = "__routecodition2__"
-    endpoint_names = ["__routeendpoint__"]
-    enabled        = __routeenable__
+    endpoint_names = ["__routeendpoint2__"]
+    enabled        = __routeenable2__
   }
 
   tags = {
