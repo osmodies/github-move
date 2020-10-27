@@ -42,7 +42,7 @@ resource "azurerm_network_interface" "mynetworkinterface" {
     private_ip_address_allocation = "Dynamic"
   }
 }
-#Storage account
+/*#Storage account
 resource "azurerm_storage_account" "mystorageaccount" {
   name                     = "__resourcestoragename__"
   resource_group_name      = azurerm_resource_group.iotresourcegroup.name
@@ -50,6 +50,10 @@ resource "azurerm_storage_account" "mystorageaccount" {
   account_tier             = "__resourcestoragenameaccount_tier__"
   account_replication_type = "__resourcestorgageaccountreplication__"
 
+}*/
+data "azurerm_storage_account" "mystorageaccount" {
+  name                = "__resourcestoragename__"
+  resource_group_name = "azurerm_resource_group.iotresourcegroup.name"
 }
 # Create (and display) an SSH key
 resource "tls_private_key" "epm_ssh" {
@@ -87,6 +91,6 @@ resource "azurerm_linux_virtual_machine" "myvm" {
   }
 
   boot_diagnostics {
-        storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
+        storage_account_uri = data.azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
 }
