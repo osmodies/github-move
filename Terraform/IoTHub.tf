@@ -56,7 +56,7 @@ resource "azurerm_iothub" "myitohub" {
 
   endpoint {
     type                       = "AzureIotHub.StorageContainer"
-    connection_string          = azurerm_storage_account.mystorage.primary_blob_connection_string
+    connection_string          = data.azurerm_storage_account.mystorage.primary_blob_connection_string
     name                       = "__routeendpoint__"
     batch_frequency_in_seconds = __endpointbatchfrecuency__
     max_chunk_size_in_bytes    = __endpointmaxchunksize__
