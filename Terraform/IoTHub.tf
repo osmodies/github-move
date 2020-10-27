@@ -72,7 +72,7 @@ resource "azurerm_iothub" "example" {
     source         = "__routesource__"
     condition      = "__routecondition__"
     endpoint_names = ["__routeendpoint__"]
-    enabled        = __routeenable__
+    enabled        = __routeenabled__
   }
 
   route {
@@ -80,7 +80,7 @@ resource "azurerm_iothub" "example" {
     source         = "__routesource2__"
     condition      = "__routecondition2__"
     endpoint_names = ["__routeendpoint2__"]
-    enabled        = __routeenable2__
+    enabled        = __routeenabled2__
   }
 
   tags = {
