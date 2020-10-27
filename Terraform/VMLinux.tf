@@ -44,11 +44,11 @@ resource "azurerm_network_interface" "mynetworkinterface" {
 }
 #Storage account
 resource "azurerm_storage_account" "mystorageaccount" {
-  name                     = "__storageaccountname__"
+  name                     = "__resourcestoragename__"
   resource_group_name      = azurerm_resource_group.iotresourcegroup.name
   location                 = azurerm_resource_group.iotresourcegroup.location
-  account_tier             = "__account_tier__"
-  account_replication_type = "__account_replication_type__"
+  account_tier             = "__resourcestoragenameaccount_tier__"
+  account_replication_type = "__resourcestorgageaccountreplication__"
 
 }
 resource "azurerm_linux_virtual_machine" "myvm" {
