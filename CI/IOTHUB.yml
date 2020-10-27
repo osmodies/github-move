@@ -23,7 +23,7 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
      # this will create Azure resource group
-      az group create --location westus --name $(terraformstoragerg)
+      az group create --location eastus --name $(terraformstoragerg)
       az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
       az storage container create --name $(TerraformContainername) --account-name $(terraformstorageaccount)
       az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
