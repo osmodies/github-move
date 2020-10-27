@@ -13,7 +13,7 @@ trigger:
 variables:
   - group: IotExample
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 steps:
 - task: AzureCLI@1
@@ -27,6 +27,8 @@ steps:
       az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
       az storage container create --name $(TerraformContainername) --account-name $(terraformstorageaccount)
       az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
+      key=$(az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount) --query [0].value -o tsv)
+      Write-Host "##vso[task.setvariable variable=storagekey]$key"
 
 - task: AzurePowerShell@3
   displayName: 'Azure PowerShell script to get the storage key'
@@ -35,11 +37,10 @@ steps:
     ScriptType: InlineScript
     Inline: |
      # Using this script we will fetch storage key which is required in terraform file to authenticate backend stoarge account
-     
      $key=(Get-AzureRmStorageAccountKey -ResourceGroupName $(terraformstoragerg) -AccountName $(terraformstorageaccount)).Value[0]
-     
      Write-Host "##vso[task.setvariable variable=storagekey]$key"
     azurePowerShellVersion: LatestVersion
+  enabled: false
 
 - task: replacetokens@3
   inputs:
