@@ -16,7 +16,7 @@ data "azurerm_storage_account" "mystorage" {
 }*/
 
 resource "azurerm_storage_container" "mystoragecontainer" {
-  name                  = "__resourcestoragecontainername2__"
+  name                  = "__resourcestoragecontainername__"
   storage_account_name  = data.azurerm_storage_account.mystorage.name
   container_access_type = "__resourcesstoragecontaineraccess__"
 }
