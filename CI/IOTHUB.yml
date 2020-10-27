@@ -13,7 +13,7 @@ trigger:
 variables:
   - group: IotExample
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 steps:
 - task: AzureCLI@1
