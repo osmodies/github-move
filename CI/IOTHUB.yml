@@ -28,7 +28,7 @@ steps:
       az storage container create --name $(TerraformContainername) --account-name $(terraformstorageaccount)
       az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
       key=$(az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount) --query [0].value -o tsv)
-      Write-Host "##vso[task.setvariable variable=storagekey]$key"
+      echo "##vso[task.setvariable variable=storagekey]$key"
 
 - task: AzurePowerShell@3
   displayName: 'Azure PowerShell script to get the storage key'
