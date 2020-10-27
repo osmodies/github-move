@@ -23,10 +23,10 @@ steps:
     scriptLocation: inlineScript
     inlineScript: |
      # this will create Azure resource group
-     call az group create --location westus --name $(terraformstoragerg)
-     call az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
-     call az storage container create --name $(TerraformContainername) --account-name $(terraformstorageaccount)
-     call az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
+      az group create --location westus --name $(terraformstoragerg)
+      az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
+      az storage container create --name $(TerraformContainername) --account-name $(terraformstorageaccount)
+      az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
 
 - task: AzurePowerShell@3
   displayName: 'Azure PowerShell script to get the storage key'
