@@ -3,17 +3,21 @@ resource "azurerm_resource_group" "resourcegropuiothub" {
   location = "__resourcegrouplocation__"
 }
 
-resource "azurerm_storage_account" "mystorage" {
+data "azurerm_storage_account" "mystorage" {
+  name                = "__resourcestoragename__"
+  resource_group_name = "azurerm_resource_group.resourcegropuiothub.name"
+}
+/*resource "azurerm_storage_account" "mystorage" {
   name                     = "__resourcestoragename__"
   resource_group_name      = azurerm_resource_group.resourcegropuiothub.name
   location                 = azurerm_resource_group.resourcegropuiothub.location
   account_tier             = "__reourcestorageaccounttier__"
   account_replication_type = "__resourcestorgageaccountreplication__"
-}
+}*/
 
 resource "azurerm_storage_container" "mystoragecontainer" {
-  name                  = "__resourcestoragecontainername__"
-  storage_account_name  = azurerm_storage_account.mystorage.name
+  name                  = "__resourcestoragecontainername2__"
+  storage_account_name  = data.azurerm_storage_account.mystorage.name
   container_access_type = "__resourcesstoragecontaineraccess__"
 }
 
