@@ -3,21 +3,18 @@ resource "azurerm_resource_group" "resourcegropuiothub" {
   location = "__resourcegrouplocation__"
 }
 
-data "azurerm_storage_account" "mystorage" {
-  name                = "__resourcestoragename__"
-  resource_group_name = "azurerm_resource_group.resourcegropuiothub.name"
-}
-/*resource "azurerm_storage_account" "mystorage" {
+
+resource "azurerm_storage_account" "mystorage" {
   name                     = "__resourcestoragename__"
   resource_group_name      = azurerm_resource_group.resourcegropuiothub.name
   location                 = azurerm_resource_group.resourcegropuiothub.location
   account_tier             = "__reourcestorageaccounttier__"
   account_replication_type = "__resourcestorgageaccountreplication__"
-}*/
+}
 
 resource "azurerm_storage_container" "mystoragecontainer" {
   name                  = "__resourcestoragecontainername__"
-  storage_account_name  = data.azurerm_storage_account.mystorage.name
+  storage_account_name  = azurerm_storage_account.mystorage.name
   container_access_type = "__resourcesstoragecontaineraccess__"
 }
 
@@ -56,7 +53,7 @@ resource "azurerm_iothub" "myitohub" {
 
   endpoint {
     type                       = "AzureIotHub.StorageContainer"
-    connection_string          = data.azurerm_storage_account.mystorage.primary_blob_connection_string
+    connection_string          = azurerm_storage_account.mystorage.primary_blob_connection_string
     name                       = "__routeendpoint__"
     batch_frequency_in_seconds = __endpointbatchfrecuency__
     max_chunk_size_in_bytes    = __endpointmaxchunksize__
