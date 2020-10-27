@@ -77,7 +77,7 @@ steps:
     provider: 'azurerm'
     command: 'validate'
     workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-  enabled: false
+  enabled: true
 
 - task: TerraformTaskV1@0
   displayName: 'Terraform Plan'
