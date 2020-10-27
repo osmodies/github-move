@@ -51,6 +51,13 @@ resource "azurerm_storage_account" "mystorageaccount" {
   account_replication_type = "__resourcestorgageaccountreplication__"
 
 }
+# Create (and display) an SSH key
+resource "tls_private_key" "epm_ssh" {
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+output "tls_private_key" { value = tls_private_key.epm_ssh.private_key_pem }
+
 resource "azurerm_linux_virtual_machine" "myvm" {
   name                = "__resourcevmname__"
   resource_group_name = azurerm_resource_group.iotresourcegroup.name
@@ -63,7 +70,8 @@ resource "azurerm_linux_virtual_machine" "myvm" {
 
   admin_ssh_key {
     username   = "__resourcevmadminuser__"
-    public_key = file("~/.ssh/id_rsa.pub")
+    #public_key = file("~/.ssh/id_rsa.pub")
+    public_key     = tls_private_key.epm_ssh.public_key_openssh
   }
 
   os_disk {
