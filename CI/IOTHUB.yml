@@ -19,12 +19,13 @@ stages:
   - deployment: DeployJob
     pool:
       vmImage: 'ubuntu-latest'
-    environment: 'IOT-DEV'
+    environment: 'IOT-DEV-stpc'
     strategy:
       runOnce:
         deploy:
           steps:
-          
+          - checkout: self
+        
           - task: AzureCLI@1
             displayName: 'Azure CLI to deploy required Azure resources'
             inputs:
@@ -33,12 +34,13 @@ stages:
               inlineScript: |
                 # this will create Azure resource group
                 az group create --location eastus --name $(terraformstoragerg)
-                az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
+                az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location eastus --sku Standard_LRS
                 az storage container create --name $(TerraformContainername) --account-name $(terraformstorageaccount)
                 az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
                 key=$(az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount) --query [0].value -o tsv)
+                echo $key
                 echo "##vso[task.setvariable variable=storagekey]$key"
-            enabled: false
+            enabled: true
 
           - task: replacetokens@3
             inputs:
@@ -56,7 +58,7 @@ stages:
             displayName: 'terraform installer'
             inputs:
               terraformVersion: '0.12.3'
-
+            enabled: false
           - task: TerraformTaskV1@0
             displayName: 'Terraform init'
             inputs:
@@ -64,10 +66,11 @@ stages:
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               backendServiceArm: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-              backendAzureRmResourceGroupName: '$(terraformstoragerg)'
-              backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
-              backendAzureRmContainerName: '$(TerraformContainername)'
+              backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
+              backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
+              backendAzureRmContainerName: '$(var.TerraformContainername)'
               backendAzureRmKey: 'terraform.tfstate'
+            enabled: false
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform validate'
@@ -75,7 +78,7 @@ stages:
               provider: 'azurerm'
               command: 'validate'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-            enabled: true
+            enabled: false
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform Plan'
@@ -84,6 +87,7 @@ stages:
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+            enabled: false
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform : apply -auto-approve'
@@ -92,10 +96,11 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               commandOptions: '-auto-approve'
               environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-              backendAzureRmResourceGroupName: '$(terraformstoragerg)'
-              backendAzureRmStorageAccountName: '$(terraformstorageaccount) '
-              backendAzureRmContainerName: terraform
-              backendAzureRmKey: '$(storagekey)'
+              backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
+              backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
+              backendAzureRmContainerName: $(var.TerraformContainername)
+              backendAzureRmKey: '$(var.terraformstoragekey)'
+            enabled: false
 
 - stage: Installmachine
   displayName: 'Install Machine Components
