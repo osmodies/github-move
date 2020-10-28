@@ -86,11 +86,10 @@ resource "azurerm_iothub" "myitohub" {
 
   tags = {​​
 
-    "Fecha de Creacion en la Nube" = "__var.var.creation__"
-    "Contacto_Infraestructura" = "__var.var.contact__"
-    "Contacto_Solucion" = "__var.var.contactSolution__"
-    "Servicio-Aplicacion" = "__var.var.app__"
-    "Descripcion" = "__var.var.description__"
- }​​
-  
+    "Fecha de Creacion en la Nube" = "__var.creation__"
+    "Contacto_Infraestructura" = "__var.contact__"
+    "Contacto_Solucion" = "__var.contactSolution__"
+    "Servicio-Aplicacion" = "__var.app__"
+    "Descripcion" = "__var.description__"
+ }​​ 
 }
