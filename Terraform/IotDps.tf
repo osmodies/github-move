@@ -1,18 +1,25 @@
 resource "azurerm_resource_group" "resourcegroupiotdps" {
-  name     = __varvar.resourcegroupname__"
-  location = __varvar.resourcegrouplocation__"
+  name     = __var.resourcegroupname__"
+  location = __var.resourcegrouplocation__"
 }
 
 resource "azurerm_iothub_dps" "iotdps" {
-  name                = __varresourceiotdps__"
+  name                = __var.resourceiotdps__"
   resource_group_name = azurerm_resource_group.resourcegroupiotdps.name
   location            = azurerm_resource_group.resourcegroupiotdps.location
 
   sku {
-    name     = __varresourceiotdpsskuname__"
-    capacity = __varresourceiotdpsskucapacity__"
+    name     = __var.resourceiotdpsskuname__"
+    capacity = __var.resourceiotdpsskucapacity__"
   }
- }​​
+    
+  tags = {​​
+    Fecha_de_Creacion_en_la_Nube = "__var.creation__"
+    Contacto_Infraestructura = "__var.contact__"
+    Contacto_Solucion = "__var.contactSolution__"
+    Servicio-Aplicacion = "__var.app__"
+    Descripcion = "__var.description__"
+ }
 }
 
 # IOT Device provisioning Service Certificate
