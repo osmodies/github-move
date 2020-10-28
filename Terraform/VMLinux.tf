@@ -17,20 +17,6 @@ data "azurerm_subnet" "mynetwork" {
   resource_group_name  = "__var.azurerm_resourcegroupname__"
 }
 
-/*resource "azurerm_virtual_network" "example" {
-  name                = "example-network"
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.iotresourcegroup.location
-  resource_group_name = azurerm_resource_group.iotresourcegroup.name
-}
-
-resource "azurerm_subnet" "example" {
-  name                 = "internal"
-  resource_group_name  = azurerm_resource_group.iotresourcegroup.name
-  virtual_network_name = azurerm_virtual_network.iotresourcegroup.name
-  address_prefixes     = ["10.0.2.0/24"]
-}*/
-
 resource "azurerm_network_interface" "mynetworkinterface" {
   name                = "__var.resourcenetworkinterface__"
   location            = azurerm_resource_group.iotresourcegroup.location
@@ -43,18 +29,18 @@ resource "azurerm_network_interface" "mynetworkinterface" {
   }
 }
 #Storage account
-resource "azurerm_storage_account" "mystorageaccount" {
+/*resource "azurerm_storage_account" "mystorageaccount" {
   name                     = "__var.resourcestoragenamevm__"
   resource_group_name      = azurerm_resource_group.iotresourcegroup.name
   location                 = azurerm_resource_group.iotresourcegroup.location
   account_tier             = "__var.resourcestoragenameaccount_tier__"
   account_replication_type = "__var.resourcestorgageaccountreplication__"
-
-}
-/*data "azurerm_storage_account" "mystorageaccount" {
-  name                = "__var.resourcestoragename__"
-  resource_group_name = "azurerm_resource_group.iotresourcegroup.name"
 }*/
+
+data "azurerm_storage_account" "mystorageaccount" {
+  name                = "__var.terraformstorageaccount__"
+  resource_group_name = "__var.terraformstoragerg__"
+}
 # Create (and display) an SSH key
 resource "tls_private_key" "epm_ssh" {
   algorithm = "RSA"
@@ -91,14 +77,14 @@ resource "azurerm_linux_virtual_machine" "myvm" {
   }
 
   boot_diagnostics {
-        storage_account_uri = azurerm_storage_account.mystorageaccount.primary_blob_endpoint
+        storage_account_uri = data.azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
 
   tags = {​​
-    Fecha_de_Creacion_en_la_Nube = "__var.creation__"
-    Contacto_Infraestructura = "__var.contact__"
-    Contacto_Solucion = "__var.contactSolution__"
-    Servicio_Aplicacion = "__var.app__"
-    Descripcion = "__var.description__"
+    "fecha de Creacion en la nube" = "__var.creation__"
+    "contacto_infraestructura" = "__var.contact__"
+    "contacto_solucion" = "__var.contactSolution__"
+    "servicio-aplicacion" = "__var.app__"
+    "descripcion" = "__var.description__"
  }​
 }
