@@ -38,6 +38,7 @@ stages:
                 az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
                 key=$(az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount) --query [0].value -o tsv)
                 echo "##vso[task.setvariable variable=storagekey]$key"
+            enabled: false
 
           - task: replacetokens@3
             inputs:
