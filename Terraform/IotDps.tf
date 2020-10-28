@@ -1,24 +1,24 @@
 resource "azurerm_resource_group" "resourcegroupiotdps" {
-  name     = "__resourcegroupname__"
-  location = "__resourcegrouplocation__"
+  name     = __varvar.resourcegroupname__"
+  location = __varvar.resourcegrouplocation__"
 }
 
 resource "azurerm_iothub_dps" "iotdps" {
-  name                = "__resourceiotdps__"
+  name                = __varresourceiotdps__"
   resource_group_name = azurerm_resource_group.resourcegroupiotdps.name
   location            = azurerm_resource_group.resourcegroupiotdps.location
 
   sku {
-    name     = "__resourceiotdpsskuname__"
-    capacity = "__resourceiotdpsskucapacity__"
+    name     = __varresourceiotdpsskuname__"
+    capacity = __varresourceiotdpsskucapacity__"
   }
   tags = {​​
 
-    "Fecha de Creacion en la Nube" = "__var.creation__"
-    "Contacto_Infraestructura" = "__var.contact__"
-    "Contacto_Solucion" = "__var.contactSolution__"
-    "Servicio-Aplicacion" = "__var.app__"
-    "Descripcion" = "__var.description__"
+    "Fecha de Creacion en la Nube" = __varvar.creation__"
+    "Contacto_Infraestructura" = __varvar.contact__"
+    "Contacto_Solucion" = __varvar.contactSolution__"
+    "Servicio-Aplicacion" = __varvar.app__"
+    "Descripcion" = __varvar.description__"
  }​​
 }
 
