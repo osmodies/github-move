@@ -12,13 +12,11 @@ trigger:
       - CI
 variables:
   - group: IotExample
-
 stages:
-- stage: Build
-  displayName: Build stage
-  
+- stage: deploy
+  displayName: Deploy stage
   jobs:
-  - deployment: BuildJob
+  - deployment: DeployJob
     pool:
       vmImage: 'ubuntu-latest'
     environment: 'IOT-DEV'
@@ -97,3 +95,22 @@ stages:
               backendAzureRmStorageAccountName: '$(terraformstorageaccount) '
               backendAzureRmContainerName: terraform
               backendAzureRmKey: '$(storagekey)'
+
+- stage: Installmachine
+  displayName: 'Install Machine Components
+  jobs:
+  - deployment: deployJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'IOT-DEV2'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                # Write your commands here
+                
+                echo 'Hello world'
