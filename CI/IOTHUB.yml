@@ -12,11 +12,12 @@ trigger:
       - CI
 variables:
   - group: IotExample
+
 stages:
-- stage: deploy
-  displayName: Deploy stage
+- stage: DeployIaCIOT
+  displayName: Deploy IaC IOT
   jobs:
-  - deployment: DeployJob
+  - deployment: DeployDeployIaCIOTJob
     pool:
       vmImage: 'ubuntu-latest'
     environment: 'IOT-DEV-stpc'
@@ -103,7 +104,8 @@ stages:
             enabled: false
 
 - stage: Installmachine
-  displayName: 'Install Machine Components
+  displayName: 'Install Machine Components'
+  dependsOn: DeployIaCIOT
   jobs:
   - deployment: deployJob
     pool:
