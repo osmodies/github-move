@@ -12,12 +12,6 @@ resource "azurerm_iothub_dps" "iotdps" {
     name     = __varresourceiotdpsskuname__"
     capacity = __varresourceiotdpsskucapacity__"
   }
-  tags {​​
-    "Fecha de Creacion en la Nube" = __var.creation__"
-    "Contacto_Infraestructura" = __var.contact__"
-    "Contacto_Solucion" = __var.contactSolution__"
-    "Servicio-Aplicacion" = __var.app__"
-    "Descripcion" = __var.description__"
  }​​
 }
 
