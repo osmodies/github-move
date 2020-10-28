@@ -16,79 +16,80 @@ variables:
 stages:
 - stage: Build
   displayName: Build stage
-  environment: 'IOT-DEV'
- jobs:
-   - job: BuildJob
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - task: AzureCLI@1
-    displayName: 'Azure CLI to deploy required Azure resources'
-    inputs:
-      azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-      scriptLocation: inlineScript
-      inlineScript: |
-        # this will create Azure resource group
-        az group create --location eastus --name $(terraformstoragerg)
-        az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
-        az storage container create --name $(TerraformContainername) --account-name $(terraformstorageaccount)
-        az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
-        key=$(az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount) --query [0].value -o tsv)
-        echo "##vso[task.setvariable variable=storagekey]$key"
+  
+  jobs:
+    - job: BuildJob
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: 'IOT-DEV'
+      steps:
+      - task: AzureCLI@1
+        displayName: 'Azure CLI to deploy required Azure resources'
+        inputs:
+          azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+          scriptLocation: inlineScript
+          inlineScript: |
+            # this will create Azure resource group
+            az group create --location eastus --name $(terraformstoragerg)
+            az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
+            az storage container create --name $(TerraformContainername) --account-name $(terraformstorageaccount)
+            az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
+            key=$(az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount) --query [0].value -o tsv)
+            echo "##vso[task.setvariable variable=storagekey]$key"
 
-  - task: replacetokens@3
-    inputs:
-      targetFiles: '**/*.tf'
-      encoding: 'auto'
-      writeBOM: true
-      actionOnMissing: 'warn'
-      keepToken: false
-      tokenPrefix: '__'
-      tokenSuffix: '__'
-      useLegacyPattern: false
-      enableTelemetry: true
+      - task: replacetokens@3
+        inputs:
+          targetFiles: '**/*.tf'
+          encoding: 'auto'
+          writeBOM: true
+          actionOnMissing: 'warn'
+          keepToken: false
+          tokenPrefix: '__'
+          tokenSuffix: '__'
+          useLegacyPattern: false
+          enableTelemetry: true
 
-  - task: TerraformInstaller@0
-    displayName: 'terraform installer'
-    inputs:
-      terraformVersion: '0.12.3'
+      - task: TerraformInstaller@0
+        displayName: 'terraform installer'
+        inputs:
+          terraformVersion: '0.12.3'
 
-  - task: TerraformTaskV1@0
-    displayName: 'Terraform init'
-    inputs:
-      provider: 'azurerm'
-      command: 'init'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-      backendServiceArm: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-      backendAzureRmResourceGroupName: '$(terraformstoragerg)'
-      backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
-      backendAzureRmContainerName: '$(TerraformContainername)'
-      backendAzureRmKey: 'terraform.tfstate'
+      - task: TerraformTaskV1@0
+        displayName: 'Terraform init'
+        inputs:
+          provider: 'azurerm'
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+          backendServiceArm: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+          backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+          backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
+          backendAzureRmContainerName: '$(TerraformContainername)'
+          backendAzureRmKey: 'terraform.tfstate'
 
-  - task: TerraformTaskV1@0
-    displayName: 'Terraform validate'
-    inputs:
-      provider: 'azurerm'
-      command: 'validate'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-    enabled: true
+      - task: TerraformTaskV1@0
+        displayName: 'Terraform validate'
+        inputs:
+          provider: 'azurerm'
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+        enabled: true
 
-  - task: TerraformTaskV1@0
-    displayName: 'Terraform Plan'
-    inputs:
-      provider: 'azurerm'
-      command: 'plan'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-      environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+      - task: TerraformTaskV1@0
+        displayName: 'Terraform Plan'
+        inputs:
+          provider: 'azurerm'
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+          environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
 
-  - task: TerraformTaskV1@0
-    displayName: 'Terraform : apply -auto-approve'
-    inputs:
-      command: apply
-      workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-      commandOptions: '-auto-approve'
-      environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-      backendAzureRmResourceGroupName: '$(terraformstoragerg)'
-      backendAzureRmStorageAccountName: '$(terraformstorageaccount) '
-      backendAzureRmContainerName: terraform
-      backendAzureRmKey: '$(storagekey)'
+      - task: TerraformTaskV1@0
+        displayName: 'Terraform : apply -auto-approve'
+        inputs:
+          command: apply
+          workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+          commandOptions: '-auto-approve'
+          environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+          backendAzureRmResourceGroupName: '$(terraformstoragerg)'
+          backendAzureRmStorageAccountName: '$(terraformstorageaccount) '
+          backendAzureRmContainerName: terraform
+          backendAzureRmKey: '$(storagekey)'
