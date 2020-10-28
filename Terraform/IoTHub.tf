@@ -84,7 +84,13 @@ resource "azurerm_iothub" "myitohub" {
     enabled        = __routeenabled2__
   }
 
-  tags = {
-    purpose = "testing"
-  }
+  tags = {​​
+
+    "Fecha de Creacion en la Nube" = "__var.creation__"
+    "Contacto_Infraestructura" = "__var.contact__"
+    "Contacto_Solucion" = "__var.contactSolution__"
+    "Servicio-Aplicacion" = "__var.app__"
+    "Descripcion" = "__var.description__"
+ }​​
+  
 }
