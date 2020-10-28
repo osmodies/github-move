@@ -83,12 +83,4 @@ resource "azurerm_iothub" "myitohub" {
     endpoint_names = ["__var.routeendpoint2__"]
     enabled        = __var.routeenabled2__
   }
-
-   tags = {​​
-    Fecha_de_Creacion_en_la_Nube = "__var.creation__"
-    Contacto_Infraestructura = "__var.contact__"
-    Contacto_Solucion = "__var.contactSolution__"
-    Servicio-Aplicacion = "__var.app__"
-    Descripcion = "__var.description__"
-  } 
 }
