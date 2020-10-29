@@ -82,7 +82,7 @@ resource "azurerm_linux_virtual_machine" "myvm" {
 
   tags = {
           "Fecha de Creacion en la Nube" = "__var.tagcreation__"
-          "Contacto_Infraestructura" = "__var.tagcontact__"
+          "Contacto_Infraestructura" = "__var.tagcontactinfraestructure__"
           "Contacto_Solucion" = "__var.tagcontactSolution__"
           "Servicio-Aplicacion" = "__var.tagapp__"
           "Descripcion" = "__var.tagdescription__"
