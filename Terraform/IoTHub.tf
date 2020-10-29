@@ -18,7 +18,7 @@ resource "azurerm_storage_container" "mystoragecontainer" {
   container_access_type = "__var.resourcesstoragecontaineraccess__"
 }*/
 
-resource "azurerm_eventhub_namespace" "myeventhubnamespace" {
+/*resource "azurerm_eventhub_namespace" "myeventhubnamespace" {
   name                = "__var.resourceeventhubnamepace__"
   resource_group_name = azurerm_resource_group.resourcegropuiothub.name
   location            = azurerm_resource_group.resourcegropuiothub.location
@@ -39,7 +39,7 @@ resource "azurerm_eventhub_authorization_rule" "eventhubautorization" {
   eventhub_name       = azurerm_eventhub.myeventhub.name
   name                = "__var.resourceauthorizationrulename__"
   send                = __var.resourceauthorizationrulesend__
-}
+}*/
 
 resource "azurerm_iothub" "myitohub" {
   name                = "__var.resourceiothubname__"
@@ -62,11 +62,11 @@ resource "azurerm_iothub" "myitohub" {
     file_name_format           = "__var.endpointfilenameformat__"
   }
 
-  endpoint {
+/*  endpoint {
     type              = "AzureIotHub.EventHub"
     connection_string = azurerm_eventhub_authorization_rule.eventhubautorization.primary_connection_string
     name              = "__var.routeendpoint2__"
-  }
+  }*/
 
   route {
     name           = "__var.routename__"
@@ -76,11 +76,18 @@ resource "azurerm_iothub" "myitohub" {
     enabled        = __var.routeenabled__
   }
 
-  route {
+/*  route {
     name           = "__var.routename2__"
     source         = "__var.routesource2__"
     condition      = "__var.routecondition2__"
     endpoint_names = ["__var.routeendpoint2__"]
     enabled        = __var.routeenabled2__
-  }
+  }*/
+  tags = {
+          "Fecha de Creacion en la Nube" = "__var.tagcreation__"
+          "Contacto_Infraestructura" = "__var.tagcontactinfraestructure__"
+          "Contacto_Solucion" = "__var.tagcontactSolution__"
+          "Servicio-Aplicacion" = "__var.tagapp__"
+          "Descripcion" = "__var.tagdescription__"
+      }
 }
