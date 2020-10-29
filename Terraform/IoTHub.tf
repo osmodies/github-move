@@ -53,11 +53,11 @@ resource "azurerm_iothub" "myitohub" {
 
   endpoint {
     type                       = "AzureIotHub.StorageContainer"
-    #connection_string          = "__terrafconnectionstring__"
+    connection_string          = "__terrafconnectionstring__"
     name                       = "__var.routeendpoint__"
     batch_frequency_in_seconds = __var.endpointbatchfrecuency__
     max_chunk_size_in_bytes    = __var.endpointmaxchunksize__
-    #container_name             = "__var.containernameiot__"
+    container_name             = "__var.containernameiot__"
     encoding                   = "__var.endpointencoding__"
     file_name_format           = "__var.endpointfilenameformat__"
   }
