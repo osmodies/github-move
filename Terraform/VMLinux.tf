@@ -79,4 +79,12 @@ resource "azurerm_linux_virtual_machine" "myvm" {
   boot_diagnostics {
         storage_account_uri = data.azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
+
+  tags = {​​
+    fecha_de_creacion_en_la_nube = "__var.creation__"
+    Contacto_Infraestructura = "__var.contact__"
+    Contacto_Solucion = "__var.contactSolution__"
+    Servicio-Aplicacion = "__var.app__"
+    Descripcion = "__var.description__"
+  }
 }
