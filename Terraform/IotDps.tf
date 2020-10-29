@@ -12,6 +12,13 @@ resource "azurerm_iothub_dps" "iotdps" {
     name     = "__var.resourceiotdpsskuname__"
     capacity = "__var.resourceiotdpsskucapacity__"
   }
+  tags = {
+        "Fecha de Creacion en la Nube" = "__var.tagcreation__"
+        "Contacto_Infraestructura" = "__var.tagcontactinfraestructure__"
+        "Contacto_Solucion" = "__var.tagcontactSolution__"
+        "Servicio-Aplicacion" = "__var.tagapp__"
+        "Descripcion" = "__var.tagdescription__"
+    }
 }
 
 # IOT Device provisioning Service Certificate
