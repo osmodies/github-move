@@ -79,8 +79,5 @@ resource "azurerm_linux_virtual_machine" "myvm" {
   boot_diagnostics {
         storage_account_uri = data.azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
-
-  tags = {​​
-    descripcion = "__var.description__"
- }​
+​
 }
