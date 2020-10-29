@@ -81,10 +81,10 @@ resource "azurerm_linux_virtual_machine" "myvm" {
     }
 
   tags = {​​
-    "fecha de Creacion en la nube" = "__var.creation__"
-    "contacto_infraestructura" = "__var.contact__"
-    "contacto_solucion" = "__var.contactSolution__"
-    "servicio-aplicacion" = "__var.app__"
-    "descripcion" = "__var.description__"
+    fecha_de_Creacion_en_la_nube = "__var.creation__"
+    contacto_infraestructura = "__var.contact__"
+    contacto_solucion = "__var.contactSolution__"
+    servicio-aplicacion = "__var.app__"
+    descripcion = "__var.description__"
  }​
 }
