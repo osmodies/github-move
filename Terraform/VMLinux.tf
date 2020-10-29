@@ -80,11 +80,7 @@ resource "azurerm_linux_virtual_machine" "myvm" {
         storage_account_uri = data.azurerm_storage_account.mystorageaccount.primary_blob_endpoint
     }
 
-  tags {​​
-    fecha_de_creacion_en_la_nube = "__var.creation__"
-    contacto_infraestructura = "__var.contact__"
-    contacto_solucion = "__var.contactSolution__"
-    servicio-aplicacion = "__var.app__"
+  tags = {​​
     descripcion = "__var.description__"
  }​
 }
