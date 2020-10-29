@@ -54,15 +54,16 @@ resource "azurerm_linux_virtual_machine" "myvm" {
   location            = azurerm_resource_group.iotresourcegroup.location
   size                = "__var.reourcevmsize__"
   admin_username      = "__var.resourcevmadminuser__"
+  admin_password      = "__var.resourcevmadminpassword__"
   network_interface_ids = [
     azurerm_network_interface.mynetworkinterface.id,
   ]
 
-  admin_ssh_key {
+  /*admin_ssh_key {
     username   = "__var.resourcevmadminuser__"
     #public_key = file("~/.ssh/id_rsa.pub")
     public_key     = tls_private_key.epm_ssh.public_key_openssh
-  }
+  }*/
 
   os_disk {
     caching              = "ReadWrite"
