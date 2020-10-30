@@ -1,6 +1,5 @@
 data "azurerm_resource_group" "resourcegroupiotdps" {
   name     = "__var.resourcegroupname__"
-  location = "__var.resourcegrouplocation__"
 }
 
 resource "azurerm_iothub_dps" "iotdps" {
