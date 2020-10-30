@@ -62,6 +62,11 @@ stages:
               terraformVersion: '0.12.3'
             enabled: true
           - task: TerraformTaskV1@0
+            inputs:
+              provider: 'azurerm'
+              command: 'destroy'
+              environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+          - task: TerraformTaskV1@0
             displayName: 'Terraform init'
             inputs:
               provider: 'azurerm'
