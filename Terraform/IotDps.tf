@@ -1,12 +1,12 @@
-resource "azurerm_resource_group" "resourcegroupiotdps" {
+data "azurerm_resource_group" "resourcegroupiotdps" {
   name     = "__var.resourcegroupname__"
   location = "__var.resourcegrouplocation__"
 }
 
 resource "azurerm_iothub_dps" "iotdps" {
   name                = "__var.resourceiotdps__"
-  resource_group_name = azurerm_resource_group.resourcegroupiotdps.name
-  location            = azurerm_resource_group.resourcegroupiotdps.location
+  resource_group_name = data.azurerm_resource_group.resourcegroupiotdps.name
+  location            = data.azurerm_resource_group.resourcegroupiotdps.location
 
   sku {
     name     = "__var.resourceiotdpsskuname__"
@@ -24,7 +24,7 @@ resource "azurerm_iothub_dps" "iotdps" {
 # IOT Device provisioning Service Certificate
 /*resource "azurerm_iothub_dps_certificate" "dpscertificate" {
   name                = "example"
-  resource_group_name = azurerm_resource_group.resourcegroupiotdps.name
+  resource_group_name = data.azurerm_resource_group.resourcegroupiotdps.name
   iot_dps_name        = azurerm_iothub_dps.iotdps.name
 
   certificate_content = filebase64("example.cer")
@@ -33,7 +33,7 @@ resource "azurerm_iothub_dps" "iotdps" {
 # Device Provisioning Service Shared Access policy
 /*resource "azurerm_iothub_dps_shared_access_policy" "dpsaccesspolicy" {
   name                = "example"
-  resource_group_name = azurerm_resource_group.resourcegroupiotdps.name
+  resource_group_name = data.azurerm_resource_group.resourcegroupiotdps.name
   iothub_dps_name     = azurerm_iothub_dps.iotdps.name
 
   enrollment_write = true
