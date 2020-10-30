@@ -6,7 +6,7 @@ provider "azurerm" {
     features {}
 }
 
-resource "azurerm_resource_group" "iotresourcegroup" {
+data "azurerm_resource_group" "iotresourcegroup" {
   name     = "__var.resourcegroupname__"
   location = "__var.resourcegrouplocation__"
 }
@@ -19,8 +19,8 @@ data "azurerm_subnet" "mynetwork" {
 
 resource "azurerm_network_interface" "mynetworkinterface" {
   name                = "__var.resourcenetworkinterface__"
-  location            = azurerm_resource_group.iotresourcegroup.location
-  resource_group_name = azurerm_resource_group.iotresourcegroup.name
+  location            = data.azurerm_resource_group.iotresourcegroup.location
+  resource_group_name = data.azurerm_resource_group.iotresourcegroup.name
 
   ip_configuration {
     name                          = "internal"
@@ -29,29 +29,21 @@ resource "azurerm_network_interface" "mynetworkinterface" {
   }
 }
 #Storage account
-/*resource "azurerm_storage_account" "mystorageaccount" {
-  name                     = "__var.resourcestoragenamevm__"
-  resource_group_name      = azurerm_resource_group.iotresourcegroup.name
-  location                 = azurerm_resource_group.iotresourcegroup.location
-  account_tier             = "__var.resourcestoragenameaccount_tier__"
-  account_replication_type = "__var.resourcestorgageaccountreplication__"
-}*/
-
 data "azurerm_storage_account" "mystorageaccount" {
   name                = "__var.terraformstorageaccount__"
   resource_group_name = "__var.terraformstoragerg__"
 }
 # Create (and display) an SSH key
-resource "tls_private_key" "epm_ssh" {
+/*resource "tls_private_key" "epm_ssh" {
   algorithm = "RSA"
   rsa_bits = 4096
-}
+}*/
 output "tls_private_key" { value = tls_private_key.epm_ssh.private_key_pem }
 
 resource "azurerm_linux_virtual_machine" "myvm" {
   name                = "__var.resourcevmname__"
-  resource_group_name = azurerm_resource_group.iotresourcegroup.name
-  location            = azurerm_resource_group.iotresourcegroup.location
+  resource_group_name = data.azurerm_resource_group.iotresourcegroup.name
+  location            = data.azurerm_resource_group.iotresourcegroup.location
   size                = "__var.reourcevmsize__"
   admin_username      = "__var.resourcevmadminuser__"
   admin_password      = "__var.resourcevmadminpassword__"
