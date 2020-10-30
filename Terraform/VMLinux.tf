@@ -8,7 +8,6 @@ provider "azurerm" {
 
 data "azurerm_resource_group" "iotresourcegroup" {
   name     = "__var.resourcegroupname__"
-  location = "__var.resourcegrouplocation__"
 }
 #refer to a subnet
 data "azurerm_subnet" "mynetwork" {
