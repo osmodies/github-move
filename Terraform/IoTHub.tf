@@ -1,6 +1,5 @@
 data "azurerm_resource_group" "resourcegropuiothub" {
   name     = "__var.resourcegroupname__"
-  location = "__var.resourcegrouplocation__"
 }
 
 
