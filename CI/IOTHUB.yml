@@ -75,13 +75,6 @@ stages:
               backendAzureRmKey: 'terraform.tfstate'
             enabled: true
 
-          - task: TerraformTaskV1@0
-            displayName: 'Terraform destroy'
-            inputs:
-              provider: 'azurerm'
-              command: 'destroy'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform validate'
@@ -112,6 +105,14 @@ stages:
               backendAzureRmContainerName: $(var.terraformContainername)
               backendAzureRmKey: '$(terraformstoragekey)'
             enabled: true
+          - task: TerraformTaskV1@0
+            displayName: 'Terraform destroy'
+            inputs:
+              provider: 'azurerm'
+              command: 'destroy'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+              environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+            enabled: false
 
 - stage: Installmachine
   displayName: 'Install Machine Components'
