@@ -36,9 +36,9 @@ data "azurerm_storage_account" "mystorageaccount" {
 /*resource "tls_private_key" "epm_ssh" {
   algorithm = "RSA"
   rsa_bits = 4096
-}*/
+}
 output "tls_private_key" { value = tls_private_key.epm_ssh.private_key_pem }
-
+*/
 resource "azurerm_linux_virtual_machine" "myvm" {
   name                = "__var.resourcevmname__"
   resource_group_name = data.azurerm_resource_group.iotresourcegroup.name
