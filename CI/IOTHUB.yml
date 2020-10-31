@@ -104,7 +104,7 @@ stages:
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
               backendAzureRmContainerName: $(var.terraformContainername)
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: true
+            enabled: false
           - task: TerraformTaskV1@0
             displayName: 'Terraform destroy'
             inputs:
@@ -112,7 +112,7 @@ stages:
               command: 'destroy'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-            enabled: false
+            enabled: ture
 
 - stage: Installmachine
   displayName: 'Install Machine Components'
