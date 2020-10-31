@@ -1,3 +1,11 @@
+ terraform {  
+ backend "azurerm" {
+  storage_account_name = "__var.terraformstorageaccount__"
+    container_name       = "__var.terraformContainername__"
+    key                  = "__var.terraformstoragekey__"
+	access_key  ="__terrafconnectionstring__"
+	}
+ }
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
     # The "feature" block is required for AzureRM provider 2.x. 
