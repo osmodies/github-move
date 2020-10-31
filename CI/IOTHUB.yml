@@ -136,7 +136,7 @@ stages:
 
 - stage: DeleteIAC
   displayName: 'DeleteIAC'
-  condition: and(eq(variables['DeleteIAC'], 'yes'))
+  condition: and(eq(variables['DeleteIAC'], 'Yes'))
   jobs:
   - deployment: deployJob
     pool:
