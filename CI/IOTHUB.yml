@@ -110,8 +110,8 @@ stages:
                 echo  $(var.resourcevmadminpassword) | ssh $(var.resourcevmadminuser)@$(var.ipvmlinux)
                 ls
 
-- stage: DeleteIAC
-  displayName: 'DeleteIAC'
+- stage: DeleteIACIOT
+  displayName: 'DeleteIACIOT'
   condition: eq(variables['DeleteIAC'], 'Yes')
   jobs:
   - deployment: deploydeleteiotiacJob
