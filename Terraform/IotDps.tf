@@ -3,7 +3,7 @@ backend "azurerm" {
     storage_account_name = "__var.terraformstorageaccount__"
     container_name       = "__var.terraformContainername__"
     key                  = "__var.terraformstoragekey__"
-    access_key  ="__terrafconnectionstring__"
+    access_key  ="__terraformstoragekey__"
   }
 }
 data "azurerm_resource_group" "resourcegroupiotdps" {
