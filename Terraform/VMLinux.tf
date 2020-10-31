@@ -1,17 +1,18 @@
-terraform {  
-backend "azurerm" {
-    storage_account_name = "__var.terraformstorageaccount__"
-    container_name       = "__var.terraformContainername__"
-    key                  = "__var.terraformstoragekey__"
-    access_key  ="__terraformstoragekey__"
-  }
-}
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
     # The "feature" block is required for AzureRM provider 2.x. 
     # If you're using version 1.x, the "features" block is not allowed.
     version = "~>2.0"
     features {}
+}
+
+terraform {  
+  backend "azurerm" {
+    storage_account_name = "__var.terraformstorageaccount__"
+    container_name       = "__var.terraformContainername__"
+    key                  = "__var.terraformstoragekey__"
+    access_key  ="__terraformstoragekey__"
+  }
 }
 
 data "azurerm_resource_group" "iotresourcegroup" {
