@@ -1,8 +1,15 @@
+ terraform {  
+ backend "azurerm" {
+  storage_account_name = "__var.terraformstorageaccount__"
+    container_name       = "__var.terraformContainername__"
+    key                  = "__var.terraformstoragekey__"
+	access_key  ="__terrafconnectionstring__"
+	}
+ }
+
 data "azurerm_resource_group" "resourcegropuiothub" {
   name     = "__var.resourcegroupname__"
 }
-
-
 
 resource "azurerm_iothub" "myitohub" {
   name                = "__var.resourceiothubname__"
