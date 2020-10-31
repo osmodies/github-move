@@ -1,5 +1,5 @@
 terraform {  
-backend "azurerm" {
+  backend "azurerm" {
     storage_account_name = "__var.terraformstorageaccount__"
     container_name       = "__var.terraformContainername__"
     key                  = "__var.terraformstoragekey__"
