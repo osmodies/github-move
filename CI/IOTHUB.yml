@@ -17,6 +17,7 @@ variables:
 stages:
 - stage: DeployIaCIOT
   displayName: Deploy IaC IOT
+  condition: and( eq(variables['DeleteIAC'], 'No'))
   jobs:
   - deployment: DeployDeployIaCIOTJob
     pool:
@@ -112,7 +113,7 @@ stages:
               command: 'destroy'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-            enabled: ture
+            enabled: true
 
 - stage: Installmachine
   displayName: 'Install Machine Components'
@@ -132,3 +133,24 @@ stages:
               script: |
                 echo  $(var.resourcevmadminpassword) | ssh $(var.resourcevmadminuser)@$(var.ipvmlinux)
                 ls
+
+- stage: DeleteIAC
+  displayName: 'DeleteIAC'
+  condition: and(eq(variables['DeleteIAC'], 'yes'))
+  jobs:
+  - deployment: deployJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'IOT-DEV2'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: TerraformTaskV1@0
+            displayName: 'Terraform destroy'
+            inputs:
+              provider: 'azurerm'
+              command: 'destroy'
+              workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
+              environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+            enabled: true
