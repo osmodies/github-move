@@ -6,15 +6,6 @@ provider "azurerm" {
     features {}
 }
 
-terraform {  
-  backend "azurerm" {
-    storage_account_name = "__var.terraformstorageaccount__"
-    container_name       = "__var.terraformContainername__"
-    key                  = "__var.terraformstoragekey__"
-    access_key  ="__terraformstoragekey__"
-  }
-}
-
 data "azurerm_resource_group" "iotresourcegroup" {
   name     = "__var.resourcegroupname__"
 }
