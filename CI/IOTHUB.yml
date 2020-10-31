@@ -59,7 +59,7 @@ stages:
           - task: TerraformInstaller@0
             displayName: 'terraform installer'
             inputs:
-              terraformVersion: '0.12.3'
+              terraformVersion: '0.13.5'
             enabled: true
 
           - task: TerraformTaskV1@0
@@ -72,7 +72,7 @@ stages:
               backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
               backendAzureRmContainerName: '$(var.terraformContainername)'
-              backendAzureRmKey: 'terraform.tfstate'
+              backendAzureRmKey: '$(var.terraformstoragekey)'
             enabled: true
 
 
@@ -103,7 +103,7 @@ stages:
               backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
               backendAzureRmContainerName: $(var.terraformContainername)
-              backendAzureRmKey: '$(terraformstoragekey)'
+              backendAzureRmKey: '$(var.terraformstoragekey)'
             enabled: true
           - task: TerraformTaskV1@0
             displayName: 'Terraform destroy'
@@ -130,6 +130,5 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                # Write your commands here
-                
-                echo 'Hello world'
+                echo  $(var.resourcevmadminpassword) | ssh $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                ls
