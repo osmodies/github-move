@@ -17,7 +17,7 @@ variables:
 stages:
 - stage: DeployIaCIOT
   displayName: Deploy IaC IOT
-  condition: and( eq(variables['DeleteIAC'], 'No'))
+  condition: eq(variables['DeleteIAC'], 'No')
   jobs:
   - deployment: DeployDeployIaCIOTJob
     pool:
@@ -136,7 +136,7 @@ stages:
 
 - stage: DeleteIAC
   displayName: 'DeleteIAC'
-  condition: and(eq(variables['DeleteIAC'], 'Yes'))
+  condition: eq(variables['DeleteIAC'], 'Yes')
   jobs:
   - deployment: deployJob
     pool:
