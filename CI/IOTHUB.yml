@@ -19,7 +19,7 @@ stages:
   displayName: Deploy IaC IOT
   condition: eq(variables['DeleteIAC'], 'No')
   jobs:
-  - deployment: DeployDeployIaCIOTJob
+  - deployment: DeployIaCIOTJob
     pool:
       vmImage: 'ubuntu-latest'
     environment: 'IOT-DEV-stpc'
@@ -114,7 +114,7 @@ stages:
   displayName: 'DeleteIAC'
   condition: eq(variables['DeleteIAC'], 'Yes')
   jobs:
-  - deployment: deployJob
+  - deployment: deploydeleteiotiacJob
     pool:
       vmImage: 'ubuntu-latest'
     environment: 'IOT-DEV-stpc-Delete'
