@@ -125,7 +125,7 @@ stages:
   - deployment: deployJob
     pool:
       vmImage: 'ubuntu-latest'
-    environment: 'IOT-DEV2'
+    environment: 'IOT-DEV-stpc-Delete'
     strategy:
       runOnce:
         deploy:
