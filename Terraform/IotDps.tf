@@ -12,7 +12,7 @@ resource "azurerm_iothub_dps" "iotdps" {
     capacity = "__var.resourceiotdpsskucapacity__"
   }
   tags = {
-        "Fecha de Creacion en la Nube" = "__var.tagcreation__"
+        "Fecha de Creacion en la Nube" = "formatdate("MM/DD/YYYY hh:mm:ss", timestamp)"
         "Contacto_Infraestructura" = "__var.tagcontactinfraestructure__"
         "Contacto_Solucion" = "__var.tagcontactSolution__"
         "Servicio-Aplicacion" = "__var.tagapp__"
