@@ -31,8 +31,9 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                 ssh -t -t $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 sh  ssh -t -t $(var.resourcevmadminuser)/$(var.resourcevmadminpassword)@$(var.ipvmlinux)
 #                echo "$(var.resourcevmadminpassword)" | ssh -t -t -p 22 "$(var.resourcevmadminuser)@$(var.ipvmlinux)"
+
 - stage: DeployIaCIOT
   displayName: Deploy IaC IOT
   condition: eq(variables['DeleteIAC'], 'Quizas')
