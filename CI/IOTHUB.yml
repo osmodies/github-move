@@ -15,28 +15,10 @@ variables:
   - group: keyvaultepm
 
 stages:
-- stage: Installmachine
-  displayName: 'Install Machine Components'
-  #dependsOn: DeployIaCIOT
-  jobs:
-  - deployment: deployJob
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'IOT-DEV2'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                 sh  ssh -t -t $(var.resourcevmadminuser)/$(var.resourcevmadminpassword)@$(var.ipvmlinux)
-#                echo "$(var.resourcevmadminpassword)" | ssh -t -t -p 22 "$(var.resourcevmadminuser)@$(var.ipvmlinux)"
 
 - stage: DeployIaCIOT
   displayName: Deploy IaC IOT
-  condition: eq(variables['DeleteIAC'], 'Quizas')
+  condition: eq(variables['DeleteIAC'], 'No')
   jobs:
   - deployment: DeployIaCIOTJob
     pool:
@@ -110,6 +92,24 @@ stages:
               backendAzureRmKey: '$(var.terraformstoragekey)'
             enabled: true
 
+- stage: Installmachine
+  displayName: 'Install Machine Components'
+  #dependsOn: DeployIaCIOT
+  jobs:
+  - deployment: deployJob
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'IOT-DEV2'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                 ssh -t -t -i ~/.ssh/id_rsa.pub $(var.resourcevmadminuser)@$(var.ipvmlinux)
+#                echo "$(var.resourcevmadminpassword)" | ssh -t -t -p 22 "$(var.resourcevmadminuser)@$(var.ipvmlinux)"
 
 
 - stage: DeleteIACIOT
