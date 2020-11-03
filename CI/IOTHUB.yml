@@ -107,7 +107,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                echo $(var.resourcevmadminpassword) | ssh -t -t -p 22 $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                echo "$(var.resourcevmadminpassword)"" | ssh -t -t -p 22 "$(var.resourcevmadminuser)@$(var.ipvmlinux)"
                 hostname
 
 - stage: DeleteIACIOT
