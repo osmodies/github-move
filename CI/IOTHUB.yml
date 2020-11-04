@@ -46,7 +46,7 @@ stages:
                 SSH_PRIVATE_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)")
                 echo "##vso[task.setvariable variable=SSH_PUBLIC_KEY]$SSH_PUBLIC_KEY
                 echo "##vso[task.setvariable variable=SSH_PRIVATE_KEY]$SSH_PRIVATE_KEY
-            enabled: false
+            enabled: true
 
           - task: AzureCLI@2
             displayName: 'Publish ssh in Azure Key Vault'
@@ -57,7 +57,7 @@ stages:
               inlineScript: |
                 az keyvault secret set --name $(var.keyvaultsecretnameprivate) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" --encoding ascii
                 az keyvault secret set --name $(var.keyvaultsecretnamepublic) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" --encoding ascii
-            enabled: false
+            enabled: true
 
           - task: replacetokens@3
             inputs:
@@ -70,13 +70,13 @@ stages:
               tokenSuffix: '__'
               useLegacyPattern: false
               enableTelemetry: true
-            enabled: false
+            enabled: true
 
           - task: TerraformInstaller@0
             displayName: 'terraform installer'
             inputs:
               terraformVersion: '0.13.5'
-            enabled: false
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform init'
@@ -89,14 +89,14 @@ stages:
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
               backendAzureRmContainerName: '$(var.terraformContainername)'
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: false
+            enabled: true
           - task: TerraformTaskV1@0
             displayName: 'Terraform validate'
             inputs:
               provider: 'azurerm'
               command: 'validate'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-            enabled: false
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform Plan'
@@ -105,7 +105,7 @@ stages:
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-            enabled: false
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform : apply -auto-approve'
@@ -118,7 +118,7 @@ stages:
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
               backendAzureRmContainerName: $(var.terraformContainername)
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: false
+            enabled: true
 
 - stage: Installmachine
   displayName: 'Install Machine Components'
