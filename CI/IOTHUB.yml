@@ -47,8 +47,8 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                az keyvault secret set –vault-name "$(var.keyvaultname)" –name "$(var.keyvaultsecretnameprivate)" –file "$(var.keyvaultsecretfileprivate)" –encoding ascii
-                az keyvault secret set –vault-name "$(var.keyvaultname)" –name "$(var.keyvaultsecretnamepublic)" –file "$(var.keyvaultsecretfilepublic)" –encoding ascii
+                az keyvault secret set –-vault-name "$(var.keyvaultname)" –n "$(var.keyvaultsecretnameprivate)" -f "$(var.keyvaultsecretfileprivate)" –e ascii
+                az keyvault secret set –-vault-name "$(var.keyvaultname)" –n "$(var.keyvaultsecretnamepublic)" –f "$(var.keyvaultsecretfilepublic)" –e ascii
 
           - task: replacetokens@3
             inputs:
