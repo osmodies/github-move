@@ -159,7 +159,7 @@ stages:
                  ssh -t -t -i $(var.keyvaultsecretfilepublic) $(var.resourcevmadminuser)@$(var.ipvmlinux)
                  ls
                  hostname
-            enabled: false
+            enabled: true
 
 
 - stage: DeleteIACIOT
