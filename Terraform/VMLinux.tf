@@ -34,7 +34,7 @@ data "azurerm_storage_account" "mystorageaccount" {
 }
 
 # Get keyvault 
-data "azurerm_key_vault" "keyvaultepm" {
+data "azurerm_key_vault" "epmkeyvault" {
   name                = "__var.keyvaultname__"
   resource_group_name = "__var.keyvaultresourcegroup__"
 }
