@@ -141,7 +141,7 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az keyvault secret download --name $(var.keyvaultsecretnameprivate) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)"
+                az keyvault secret download --name $(var.keyvaultsecretnameprivate) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)"
             enabled: true
 
           - task: Bash@3
