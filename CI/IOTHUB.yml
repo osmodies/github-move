@@ -39,7 +39,7 @@ stages:
                 -t rsa \
                 -b 4096 \
                 -C "$(var.sshcomment)" \
-                -f $(var.ssfilename) \
+                -f "$(System.DefaultWorkingDirectory)/$(var.ssfilename)" \
                 -N "$(sshpassphrase)"
           
           - task: AzureCLI@2
@@ -48,8 +48,8 @@ stages:
               scriptType: 'batch'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(var.keyvaultsecretfileprivate)" –-encoding ascii
-                az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) –-file "$(var.keyvaultsecretfilepublic)" –-encoding ascii
+                az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" –-encoding ascii
+                az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) –-file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" –-encoding ascii
           - task: Bash@3
             displayName: 'Publish SSHKEY in KeyVault'
             inputs:
