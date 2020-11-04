@@ -154,12 +154,12 @@ stages:
                   ls
                   cat $(var.keyvaultsecretfilepublic)
                   cat $(var.keyvaultsecretfileprivate)
-            enabled: true
+            enabled: false
           - task: Bash@3
             inputs:
               targetType: 'inline'
               script: |
-                 ssh -i "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 ssh -t -i "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" $(var.resourcevmadminuser)@$(var.ipvmlinux)
             enabled: true
 
 
