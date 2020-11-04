@@ -151,7 +151,7 @@ stages:
                   pwd
                   ls
                   cat $(var.keyvaultsecretfilepublic)
-            enabled: true
+            enabled: false
           - task: Bash@3
             inputs:
               targetType: 'inline'
