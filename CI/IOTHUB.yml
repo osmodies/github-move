@@ -148,15 +148,15 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                  cd /temp
+                  pwd
                   ls
-                  cat $(var.keyvaultsecretfileprivate)
+                  cat $(var.keyvaultsecretfilepublic)
             enabled: true
           - task: Bash@3
             inputs:
               targetType: 'inline'
               script: |
-                 ssh -t -t -i $(SSH_PUBLIC_KEY) $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 ssh -t -t -i $(var.keyvaultsecretfilepublic) $(var.resourcevmadminuser)@$(var.ipvmlinux)
                  ls
                  hostname
             enabled: false
