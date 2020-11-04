@@ -125,7 +125,7 @@ stages:
   displayName: 'Install Machine Components'
   dependsOn: DeployIaCIOT
   variables:
-    SSH_PUBLIC_KEY: $[DeployIaCIOT.DeployIaCIOTJob.outputs[GeneratedSSHKEY.SSH_PUBLIC_KEY]]
+    SSH_PUBLIC_KEY: $[ stageDependencies.DeployIaCIOT.DeployIaCIOTJob.outputs['GeneratedSSHKEY.SSH_PUBLIC_KEY'] ]
   jobs:
   - deployment: deployJob
     pool:
