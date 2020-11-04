@@ -32,12 +32,18 @@ data "azurerm_storage_account" "mystorageaccount" {
   name                = "__var.terraformstorageaccount__"
   resource_group_name = "__var.terraformstoragerg__"
 }
-# Create (and display) an SSH key
-resource "tls_private_key" "epm_ssh" {
-  algorithm = "RSA"
-  rsa_bits = 4096
+
+# Get keyvault 
+data "azurerm_key_vault" "keyvaultepm" {
+  name                = "__var.keyvaultname__"
+  resource_group_name = "__var.keyvaultresourcegroup__"
 }
-output "tls_private_key" { value = tls_private_key.epm_ssh.private_key_pem }
+
+#Get secret keyvault 
+data "azurerm_key_vault_secret" "keyvaultsecret" {
+  name         = "__var.keyvaultsecretnamepublic__"
+  key_vault_id = data.azurerm_key_vault.keyvaultepm.id
+}
 
 resource "azurerm_linux_virtual_machine" "myvm" {
   name                = "__var.resourcevmname__"
@@ -53,8 +59,8 @@ resource "azurerm_linux_virtual_machine" "myvm" {
 
   admin_ssh_key {
     username   = "__var.resourcevmadminuser__"
-    #public_key = file("~/.ssh/id_rsa.pub")
-    public_key     = tls_private_key.epm_ssh.public_key_openssh
+    #public_key = file("__System.DefaultWorkingDirectory__/__var.keyvaultsecretfilepublic__")
+    public_key  = data.azurerm_key_vault_secret.keyvaultsecret.value
   }
 
   os_disk {
