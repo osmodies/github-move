@@ -141,7 +141,7 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az keyvault secret download --name $(var.keyvaultsecretnameprivate) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)"
+                az keyvault secret download --name $(var.keyvaultsecretnamepublic) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)"
             enabled: true
 
           - task: Bash@3
@@ -156,7 +156,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                 ssh -t -t -i $(var.keyvaultsecretfileprivate) $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 ssh -t -t -i $(var.keyvaultsecretfilepublic) $(var.resourcevmadminuser)@$(var.ipvmlinux)
                  ls
                  hostname
             enabled: true
