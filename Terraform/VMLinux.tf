@@ -34,15 +34,15 @@ data "azurerm_storage_account" "mystorageaccount" {
 }
 
 # Get keyvault 
-data "azurerm_key_vault" "examplekeyvault" {
-  name                = "__var.keyvaultname__"
+data "azurerm_key_vault" "epmkeyvault" {
+  name                = "keyvaultodiaz"
   resource_group_name = "__var.keyvaultresourcegroup__"
 }
 
 #Get secret keyvault 
 data "azurerm_key_vault_secret" "keyvaultsecret" {
   name         = "__var.keyvaultsecretnamepublic__"
-  key_vault_id = data.azurerm_key_vault.examplekeyvault.id
+  key_vault_id = data.azurerm_key_vault.epmkeyvault.id
 }
 
 resource "azurerm_linux_virtual_machine" "myvm" {
