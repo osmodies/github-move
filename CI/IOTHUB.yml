@@ -45,7 +45,7 @@ stages:
           - task: AzureCLI@2
             inputs:
               azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-              scriptType: 'batch'
+              scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" –-encoding ascii
@@ -59,7 +59,7 @@ stages:
               script: |
                 az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" –-encoding ascii
                 az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) –-file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" –-encoding ascii
-            enabled: true
+            enabled: false
 
           - task: replacetokens@3
             inputs:
