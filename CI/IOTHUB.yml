@@ -50,7 +50,7 @@ stages:
               inlineScript: |
                 az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" –-encoding ascii
                 az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) –-file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" –-encoding ascii
-            enabled: false
+            enabled: true
             
           - task: Bash@3
             displayName: 'Publish SSHKEY in KeyVault'
