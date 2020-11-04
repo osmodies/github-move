@@ -45,7 +45,7 @@ stages:
           - task: AzureCLI@2
             inputs:
               azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-              scriptType: 'bash'
+              scriptType: 'ps'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" –-encoding ascii
