@@ -42,6 +42,14 @@ stages:
                 -f $(var.ssfilename) \
                 -N "$(sshpassphrase)"
           
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              scriptType: 'ps'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(var.keyvaultsecretfileprivate)" –-encoding ascii
+                az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) –-file "$(var.keyvaultsecretfilepublic)" –-encoding ascii
           - task: Bash@3
             displayName: 'Publish SSHKEY in KeyVault'
             inputs:
@@ -49,6 +57,7 @@ stages:
               script: |
                 az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(var.keyvaultsecretfileprivate)" –-encoding ascii
                 az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) –-file "$(var.keyvaultsecretfilepublic)" –-encoding ascii
+            enabled: false
 
           - task: replacetokens@3
             inputs:
