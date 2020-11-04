@@ -63,8 +63,8 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                az keyvault secret set --name $(var.keyvaultsecretnameprivate) --vault-name $(var.keyvaultname) --value $(SSH_PRIVATE_KEY)
-                az keyvault secret set --name $(var.keyvaultsecretnamepublic) --vault-name $(var.keyvaultname) --value $(SSH_PUBLIC_KEY)
+                az keyvault secret set --name $(var.keyvaultsecretnameprivate) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" --encoding ascii
+                az keyvault secret set --name $(var.keyvaultsecretnamepublic) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" --encoding ascii
             enabled: true
 
           - task: replacetokens@3
