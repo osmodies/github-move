@@ -41,25 +41,30 @@ stages:
                 -C "$(var.sshcomment)" \
                 -f "$(System.DefaultWorkingDirectory)/$(var.ssfilename)" \
                 -N "$(sshpassphrase)"
+                SSH_PUBLIC_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)") \
+                SSH_PRIVATE_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)")
+                echo "##vso[task.setvariable variable=SSH_PUBLIC_KEY]$SSH_PUBLIC_KEY
+                echo "##vso[task.setvariable variable=SSH_PRIVATE_KEY]$SSH_PRIVATE_KEY
+
           
           - task: AzureCLI@2
             inputs:
               azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-              scriptType: 'ps'
+              scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" –-encoding ascii
                 az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) –-file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" –-encoding ascii
-            enabled: true
+            enabled: false
             
           - task: Bash@3
             displayName: 'Publish SSHKEY in KeyVault'
             inputs:
               targetType: 'inline'
               script: |
-                az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" –-encoding ascii
-                az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) –-file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)" –-encoding ascii
-            enabled: false
+                az keyvault secret set –-name $(var.keyvaultsecretnameprivate) –-vault-name $(var.keyvaultname) --value $(SSH_PRIVATE_KEY)
+                az keyvault secret set –-name $(var.keyvaultsecretnamepublic) –-vault-name $(var.keyvaultname) --value $(SSH_PUBLIC_KEY)
+            enabled: true
 
           - task: replacetokens@3
             inputs:
