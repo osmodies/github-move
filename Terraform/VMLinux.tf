@@ -52,7 +52,7 @@ resource "azurerm_linux_virtual_machine" "myvm" {
   size                = "__var.reourcevmsize__"
   admin_username      = "__var.resourcevmadminuser__"
   #admin_password      = "__var.resourcevmadminpassword__"
-  disable_password_authentication = false
+  disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.mynetworkinterface.id,
   ]
