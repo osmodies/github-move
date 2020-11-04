@@ -161,7 +161,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                 ssh -t -$(SSH_PUBLIC_KEY)" $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 ssh -t -$(SSH_PUBLIC_KEY) $(var.resourcevmadminuser)@$(var.ipvmlinux)
             enabled: true
 
 
