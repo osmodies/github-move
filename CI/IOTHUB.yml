@@ -156,7 +156,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                 ssh -t -t -i $(var.keyvaultsecretfilepublic) $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 ssh -t -t -i $(var.keyvaultsecretfileprivate) $(var.resourcevmadminuser)@$(var.ipvmlinux)
                  ls
                  hostname
             enabled: true
