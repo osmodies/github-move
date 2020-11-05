@@ -54,7 +54,7 @@ stages:
               provider: 'azurerm'
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              backendServiceArm: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              backendServiceArm: '$(var.serviceconnection)'
               backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
               backendAzureRmContainerName: '$(var.terraformContainername)'
@@ -74,7 +74,7 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              environmentServiceNameAzureRM: '$(var.serviceconnection)'
             enabled: true
 
           - task: TerraformTaskV1@0
@@ -83,7 +83,7 @@ stages:
               command: apply
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               commandOptions: '-auto-approve'
-              environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              environmentServiceNameAzureRM: '$(var.serviceconnection)'
               backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
               backendAzureRmContainerName: $(var.terraformContainername)
@@ -250,7 +250,7 @@ stages:
               provider: 'azurerm'
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              backendServiceArm: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              backendServiceArm: '$(var.serviceconnection)'
               backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
               backendAzureRmContainerName: '$(var.terraformContainername)'
@@ -262,7 +262,7 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              environmentServiceNameAzureRM: '$(var.serviceconnection)'
             enabled: true
           - task: TerraformTaskV1@0
             displayName: 'Terraform destroy'
@@ -270,5 +270,5 @@ stages:
               provider: 'azurerm'
               command: 'destroy'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              environmentServiceNameAzureRM: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              environmentServiceNameAzureRM: '$(var.serviceconnection)'
             enabled: true
