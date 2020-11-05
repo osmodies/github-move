@@ -111,9 +111,8 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                sudo yum update --security
+                sudo yum update --security -y
                 sudo yum install dnf -y
-
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
