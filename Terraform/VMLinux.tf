@@ -33,12 +33,7 @@ data "azurerm_storage_account" "storagebootdiagnostics" {
   resource_group_name = "__var.resourcevmstorageresourcegroup__"
 }
 
-
-data "azurerm_key_vault" "epmkeyvault" {
-  name                = "__var.keyvaultname__"
-  resource_group_name = "__var.keyvaultresourcegroup__"
-}
-
+#Get  keyvault 
 data "azurerm_key_vault" "epmkeyvault" {
   name                = "__var.keyvaultname__"
   resource_group_name = "__var.keyvaultresourcegroup__"
