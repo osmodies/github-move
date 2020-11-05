@@ -24,7 +24,8 @@ resource "azurerm_network_interface" "mynetworkinterface" {
   ip_configuration {
     name                          = "internal"
     subnet_id                     = data.azurerm_subnet.mynetwork.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
+    private_ip_address            = "__var.resourcevmipprivate__"
   }
 }
 #Storage account
