@@ -28,9 +28,9 @@ resource "azurerm_network_interface" "mynetworkinterface" {
   }
 }
 #Storage account
-data "azurerm_storage_account" "mystorageaccount" {
-  name                = "__var.terraformstorageaccount__"
-  resource_group_name = "__var.terraformstoragerg__"
+data "azurerm_storage_account" "storagebootdiagnostics" {
+  name                = "__var.resourcevmstoragename__"
+  resource_group_name = "__var.resourcevmstorageresourcegroup__"
 }
 
 # Get keyvault 
@@ -76,7 +76,7 @@ resource "azurerm_linux_virtual_machine" "myvm" {
   }
 
   boot_diagnostics {
-        storage_account_uri = data.azurerm_storage_account.mystorageaccount.primary_blob_endpoint
+        storage_account_uri = data.azurerm_storage_account.storagebootdiagnostics.primary_blob_endpoint
     }
 
   tags = {
