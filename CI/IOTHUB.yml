@@ -111,13 +111,22 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                sudo yum update -y
-                sudo rm /etc/yum/vars/releasever
+                sudo yum update --security
+                sudo yum install dnf -y
+
+              failOnStdErr: false
+              interactiveSession: true
+              readyTimeout: '20000'
+          - task: SSH@0
+            displayName: 'Install Prerequisites 2'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
                 sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus'
                 sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus' -y
                 sudo yum install container-selinux -y
-              failOnStdErr: false
-              interactiveSession: true
+              failOnStdErr: true
               readyTimeout: '20000'
               
           - task: SSH@0
@@ -143,7 +152,6 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                  sudo yum install dnf -y
                   sudo  dnf install compat-openssl10 -y
               failOnStdErr: false
               interactiveSession: true
