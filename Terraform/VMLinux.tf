@@ -33,7 +33,12 @@ data "azurerm_storage_account" "storagebootdiagnostics" {
   resource_group_name = "__var.resourcevmstorageresourcegroup__"
 }
 
-# Get keyvault 
+
+data "azurerm_key_vault" "epmkeyvault" {
+  name                = "__var.keyvaultname__"
+  resource_group_name = "__var.keyvaultresourcegroup__"
+}
+
 data "azurerm_key_vault" "epmkeyvault" {
   name                = "__var.keyvaultname__"
   resource_group_name = "__var.keyvaultresourcegroup__"
@@ -45,6 +50,12 @@ data "azurerm_key_vault_secret" "keyvaultsecret" {
   key_vault_id = data.azurerm_key_vault.epmkeyvault.id
 }
 
+# get azurerm_availability_set
+data "azurerm_availability_set" "avsetvm" {
+  name                = "__var.resourcevmavsetname__"
+  resource_group_name = "__var.resourcevmavsetnameresourcegroup__"
+}
+
 resource "azurerm_linux_virtual_machine" "myvm" {
   name                = "__var.resourcevmname__"
   resource_group_name = data.azurerm_resource_group.iotresourcegroup.name
@@ -52,6 +63,7 @@ resource "azurerm_linux_virtual_machine" "myvm" {
   size                = "__var.resourcevmsize__"
   admin_username      = "__var.resourcevmadminuser__"
   #admin_password      = "__var.resourcevmadminpassword__"
+  #availability_set_id             = data.azurerm_availability_set.avsetvm.id
   disable_password_authentication = true
   network_interface_ids = [
     azurerm_network_interface.mynetworkinterface.id,
