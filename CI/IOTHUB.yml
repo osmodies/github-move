@@ -159,19 +159,19 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
-                  sudo yum install moby-cli-3.0.10+azure-0.x86_64.rpm
+                  sudo yum install moby-cli-3.0.10+azure-0.x86_64.rpm -y
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
           
           - task: SSH@0
-            displayName: 'install moby-engine-3.0.10+azure-0.x86_64'
+            displayName: 'install moby-engine-3.0.10+azure-0.x86_64' 
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
                   cd package-iot
-                  sudo yum install moby-engine-3.0.10+azure-0.x86_64.rpm
+                  sudo yum install moby-engine-3.0.10+azure-0.x86_64.rpm -y
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
@@ -182,7 +182,7 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
-                  sudo rpm -Uhv libiothsm-std_1.0.9-1.el7.x86_64.rpm
+                  sudo rpm -Uhv libiothsm-std_1.0.9-1.el7.x86_64.rpm -y
               failOnStdErr: true
               interactiveSession: true
               readyTimeout: '20000'
@@ -194,7 +194,7 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
-                  sudo rpm -Uhv iotedge-1.0.9-1.el7.x86_64.rpm
+                  sudo rpm -Uhv iotedge-1.0.9-1.el7.x86_64.rpm -y
               failOnStdErr: true
               interactiveSession: true
               readyTimeout: '20000'
