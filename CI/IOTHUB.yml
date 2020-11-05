@@ -117,7 +117,7 @@ stages:
               readyTimeout: '20000'
             enabled: false
           - task: SSH@0
-            displayName: 'Install Prerequisites 2'
+            displayName: 'Install Prerequisites'
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
@@ -127,7 +127,7 @@ stages:
                 sudo yum install container-selinux -y
                 sudo yum install dnf -y
                 sudo yum update -y
-              failOnStdErr: true
+              failOnStdErr: false
               readyTimeout: '20000'
               
           - task: SSH@0
