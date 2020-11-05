@@ -46,10 +46,10 @@ data "azurerm_key_vault_secret" "keyvaultsecret" {
 }
 
 # get azurerm_availability_set
-data "azurerm_availability_set" "avsetvm" {
+/*data "azurerm_availability_set" "avsetvm" {
   name                = "__var.resourcevmavsetname__"
   resource_group_name = "__var.resourcevmavsetnameresourcegroup__"
-}
+}*/
 
 resource "azurerm_linux_virtual_machine" "myvm" {
   name                = "__var.resourcevmname__"
