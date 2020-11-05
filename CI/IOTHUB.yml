@@ -144,7 +144,7 @@ stages:
               inlineScript: |
                 az keyvault secret download --name $(var.keyvaultsecretnamepublic) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)"
                 az keyvault secret download --name $(var.keyvaultsecretnameprivate) --vault-name $(var.keyvaultname) --file "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)"
-            enabled: true
+            enabled: false
 
           - task: Bash@3
             inputs:
@@ -156,13 +156,21 @@ stages:
                   SSH_PRIVATE_KEY=$(cat $(var.keyvaultsecretfileprivate))
                   echo "##vso[task.setvariable variable=SSH_PUBLIC_KEY]$SSH_PUBLIC_KEY
                   echo "##vso[task.setvariable variable=SSH_PRIVATE_KEY]$SSH_PRIVATE_KEY
-            enabled: true
+            enabled: false
           - task: Bash@3
             inputs:
               targetType: 'inline'
               script: |
                  ssh -t -t -i "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" $(var.resourcevmadminuser)@$(var.ipvmlinux) -p 22
-            enabled: true
+            enabled: false
+          - task: SSH@0
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                hostname
+                pwd
+              readyTimeout: '20000'
 
 
 - stage: DeleteIACIOT
