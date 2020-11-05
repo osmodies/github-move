@@ -148,7 +148,7 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
-                  sudo dnf install compat-openssl10
+                  sudo yum install compat-openssl10 -y
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
