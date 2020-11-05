@@ -123,13 +123,15 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                  mkdir package-iot
-                  cd package-iot
-                  wget https://packages.microsoft.com/centos/7/prod/moby-cli-3.0.10%2Bazure-0.x86_64.rpm
-                  wget https://packages.microsoft.com/centos/7/prod/moby -engine-3.0.10% 2Bazure-0.x86_64.rpm
-                  wget https://github.com/Azure/azure-iotedge/releases/download/1.0.9/libiothsm-std_1.0.9-1.el7.x86_64.rpm
-                  wget https://github.com/Azure/azure-iotedge/releases/download/1.0.9/iotedge-1.0.9-1.el7.x86_64.rpm
-                  ls
+                mkdir package-iot
+                cd package-iot
+                wget https://packages.microsoft.com/centos/7/prod/moby-cli-3.0.10%2Bazure-0.x86_64.rpm
+                wget https://packages.microsoft.com/centos/7/prod/moby -engine-3.0.10% 2Bazure-0.x86_64.rpm
+                wget https://github.com/Azure/azure-iotedge/releases/download/1.0.9/libiothsm-std_1.0.9-1.el7.x86_64.rpm
+                wget https://github.com/Azure/azure-iotedge/releases/download/1.0.9/iotedge-1.0.9-1.el7.x86_64.rpm
+                ls
+              failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
 
           - task: SSH@0
