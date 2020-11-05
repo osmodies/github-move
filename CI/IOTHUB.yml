@@ -118,21 +118,12 @@ stages:
                 echo "intento de Borrado"
                 fi
                 sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus'
-              failOnStdErr: false
-              interactiveSession: true
-              readyTimeout: '20000'
-          - task: SSH@0
-            displayName: 'Install Prerequisites 2'
-            inputs:
-              sshEndpoint: 'vmiotedge'
-              runOptions: 'inline'
-              inline: |
                 sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus' -y
                 sudo yum install container-selinux -y
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
-
+              
           - task: SSH@0
             displayName: 'Package donwload'
             inputs:
