@@ -160,7 +160,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                 ssh -t -"$(SSH_PUBLIC_KEY)" $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 ssh -t -i "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" $(var.resourcevmadminuser)@$(var.ipvmlinux)
             enabled: true
 
 
