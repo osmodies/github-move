@@ -115,16 +115,18 @@ stages:
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
+            enabled: false
           - task: SSH@0
             displayName: 'Install Prerequisites 2'
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus'
+                sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
                 sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus' -y
                 sudo yum install container-selinux -y
                 sudo yum install dnf -y
+                sudo yum update -y
               failOnStdErr: true
               readyTimeout: '20000'
               
