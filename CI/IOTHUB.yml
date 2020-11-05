@@ -161,7 +161,7 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                 ssh -t -t -i "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 ssh -t -t -i "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" $(var.resourcevmadminuser)@$(var.ipvmlinux) -p 22
             enabled: true
 
 
