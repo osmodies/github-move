@@ -39,9 +39,8 @@ stages:
                 ssh-keygen \
                 -t rsa \
                 -b 4096 \
-                -C "$(var.sshcomment)" \
                 -f "$(System.DefaultWorkingDirectory)/$(var.ssfilename)"
-                SSH_PUBLIC_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)") \
+                SSH_PUBLIC_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)")
                 SSH_PRIVATE_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)")
                 echo "##vso[task.setvariable variable=SSH_PUBLIC_KEY]$SSH_PUBLIC_KEY
                 echo "##vso[task.setvariable variable=SSH_PRIVATE_KEY]$SSH_PRIVATE_KEY
