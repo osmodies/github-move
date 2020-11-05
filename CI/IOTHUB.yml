@@ -39,8 +39,10 @@ stages:
                 ssh-keygen \
                 -t rsa \
                 -b 4096 \
-                -f "$(System.DefaultWorkingDirectory)/$(var.ssfilename)"
-                SSH_PUBLIC_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)")
+                -C "$(var.sshcomment)" \
+                -f "$(System.DefaultWorkingDirectory)/$(var.ssfilename)" \
+                -N "$(sshpassphrase)"
+                SSH_PUBLIC_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)") \
                 SSH_PRIVATE_KEY=$(cat "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfilepublic)")
                 echo "##vso[task.setvariable variable=SSH_PUBLIC_KEY]$SSH_PUBLIC_KEY
                 echo "##vso[task.setvariable variable=SSH_PRIVATE_KEY]$SSH_PRIVATE_KEY
@@ -160,6 +162,8 @@ stages:
               targetType: 'inline'
               script: |
                  ssh -t -i "$(System.DefaultWorkingDirectory)/$(var.keyvaultsecretfileprivate)" $(var.resourcevmadminuser)@$(var.ipvmlinux)
+                 sleep 2
+                 send $(sshpassphrase)
             enabled: true
 
 
