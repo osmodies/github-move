@@ -152,6 +152,7 @@ stages:
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
+            enabled:  false
           - task: SSH@0
             displayName: 'install moby-cli-3.0.10+azure-0.x86_64'
             inputs:
