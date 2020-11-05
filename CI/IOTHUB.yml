@@ -119,6 +119,7 @@ stages:
                 sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
                 sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7.config' install 'rhui-azure-rhel7' -y
                 sudo yum install container-selinux -y
+                sudo yum install dnf
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
@@ -182,7 +183,7 @@ stages:
               inline: |
                   cd package-iot
                   sudo rpm -Uhv libiothsm-std_1.0.9-1.el7.x86_64.rpm
-              failOnStdErr: false
+              failOnStdErr: true
               interactiveSession: true
               readyTimeout: '20000'
           
@@ -194,7 +195,7 @@ stages:
               inline: |
                   cd package-iot
                   sudo rpm -Uhv iotedge-1.0.9-1.el7.x86_64.rpm
-              failOnStdErr: false
+              failOnStdErr: true
               interactiveSession: true
               readyTimeout: '20000'
 
@@ -207,7 +208,7 @@ stages:
                   cd package-iot
                   sudo systemctl restart iotedge
                   sudo systemctl status iotedge
-              failOnStdErr: false
+              failOnStdErr: true
               interactiveSession: true
               readyTimeout: '20000'
 
