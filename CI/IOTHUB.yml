@@ -106,17 +106,6 @@ stages:
         deploy:
           steps:
           - task: SSH@0
-            displayName: 'Install Prerequisites 1'
-            inputs:
-              sshEndpoint: 'vmiotedge'
-              runOptions: 'inline'
-              inline: |
-                sudo yum update --security
-              failOnStdErr: false
-              interactiveSession: true
-              readyTimeout: '20000'
-            enabled: false
-          - task: SSH@0
             displayName: 'Install Prerequisites'
             inputs:
               sshEndpoint: 'vmiotedge'
