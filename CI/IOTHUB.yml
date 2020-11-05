@@ -148,6 +148,8 @@ stages:
               inline: |
                   cd package-iot
                   sudo dnf install compat-openssl10
+              failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
           - task: SSH@0
             displayName: 'install moby-cli-3.0.10+azure-0.x86_64'
@@ -157,6 +159,8 @@ stages:
               inline: |
                   cd package-iot
                   sudo yum install moby-cli-3.0.10+azure-0.x86_64.rpm
+              failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
           
           - task: SSH@0
@@ -167,6 +171,8 @@ stages:
               inline: |
                   cd package-iot
                   sudo yum install moby-engine-3.0.10+azure-0.x86_64.rpm
+              failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
           - task: SSH@0
             displayName: 'rpm -Uhv libiothsm-std_1.0.9-1.el7'
@@ -176,6 +182,8 @@ stages:
               inline: |
                   cd package-iot
                   sudo rpm -Uhv libiothsm-std_1.0.9-1.el7.x86_64.rpm
+              failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
           
           - task: SSH@0
@@ -186,7 +194,10 @@ stages:
               inline: |
                   cd package-iot
                   sudo rpm -Uhv iotedge-1.0.9-1.el7.x86_64.rpm
+              failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
+
           - task: SSH@0
             displayName: 'Restart IotEdge'
             inputs:
@@ -196,6 +207,8 @@ stages:
                   cd package-iot
                   sudo systemctl restart iotedge
                   sudo systemctl status iotedge
+              failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
 
 - stage: DeleteIACIOT
