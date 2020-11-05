@@ -111,10 +111,16 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
+                releasever="/etc/yum/vars/releasever"
+                if [d- "$releasever"]
+                then
                 sudo rm /etc/yum/vars/releasever 
+                fi
                 sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
                 sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7.config' install 'rhui-azure-rhel7' -y
                 sudo yum install container-selinux -y
+              failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
 
           - task: SSH@0
