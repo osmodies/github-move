@@ -108,7 +108,7 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                sudo subscription-manager register --username $(redhatuser) --password redhatpassword --auto-attach --force
+                sudo subscription-manager register --username $(redhatuser) --password $(redhatpassword) --auto-attach --force
               failOnStdErr: false
               readyTimeout: '20000'
           - task: SSH@0
