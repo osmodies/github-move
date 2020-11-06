@@ -106,20 +106,29 @@ stages:
         deploy:
           steps:
           - task: SSH@0
-            displayName: 'Install Prerequisites'
+            displayName: 'Install Prerequisites rhel7'
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
                 sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
-                sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7.config' install 'rhui-azure-rhel7' -y
+                sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus' -y
                 sudo yum install container-selinux -y
                 sudo yum install dnf -y
                 sudo yum update -y
               failOnStdErr: false
-              interactiveSession: true
               readyTimeout: '20000'
-              
+          - task: SSH@0
+            displayName: 'Install Prerequisites conatainerseinux-dnf'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                sudo yum install http://mirror.centos.org/centos/7/extras/x86_64/Packages/container-selinux-2.119.2-1.911c772.el7_8.noarch.rpm -y
+                sudo yum install dnf -y
+                
+              failOnStdErr: false
+              readyTimeout: '20000'
           - task: SSH@0
             displayName: 'Package donwload'
             inputs:
