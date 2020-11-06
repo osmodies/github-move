@@ -109,6 +109,7 @@ stages:
               runOptions: 'inline'
               inline: |
                 sudo subscription-manager register --username $(redhatuser) --password $(redhatpassword) --auto-attach --force
+                sudo subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms
               failOnStdErr: false
               readyTimeout: '20000'
           - task: SSH@0
@@ -144,7 +145,7 @@ stages:
                 mkdir package-iot
                 cd package-iot
                 wget https://packages.microsoft.com/centos/7/prod/moby-cli-3.0.10%2Bazure-0.x86_64.rpm
-                wget https://packages.microsoft.com/centos/7/prod/moby -engine-3.0.10% 2Bazure-0.x86_64.rpm
+                wget https://packages.microsoft.com/centos/7/prod/moby-engine-3.0.10% 2Bazure-0.x86_64.rpm
                 wget https://github.com/Azure/azure-iotedge/releases/download/1.0.9/libiothsm-std_1.0.9-1.el7.x86_64.rpm
                 wget https://github.com/Azure/azure-iotedge/releases/download/1.0.9/iotedge-1.0.9-1.el7.x86_64.rpm
                 ls
@@ -186,7 +187,12 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
+                  if  rpm -q moby-engine
+                  then
+                  echo "installed moby-engine-3.0.10+azure-0.x86_64.rpm"
+                  else
                   sudo yum install moby-engine-3.0.10+azure-0.x86_64.rpm -y
+                  fi
               failOnStdErr: false
               readyTimeout: '20000'
           - task: SSH@0
@@ -196,7 +202,12 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
+                  if  rpm -q libiothsm
+                  then
+                  echo "installed libiothsm-std_1.0.9-1.el7.x86_64.rpm"
+                  else
                   sudo rpm -Uhv libiothsm-std_1.0.9-1.el7.x86_64.rpm -y
+                  fi
               failOnStdErr: true
               readyTimeout: '20000'
           
@@ -207,7 +218,12 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
+                  if  rpm -q iotedge
+                  then
+                  echo "installed iotedge-1.0.9-1.el7.x86_64.rpm"
+                  else
                   sudo rpm -Uhv iotedge-1.0.9-1.el7.x86_64.rpm -y
+                  fi
               failOnStdErr: true
               readyTimeout: '20000'
 
