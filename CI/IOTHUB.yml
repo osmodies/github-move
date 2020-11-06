@@ -120,7 +120,6 @@ stages:
               inline: |
                 sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
                 sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus' -y
-                sudo yum install dnf -y
                 sudo yum install container-selinux -y
                 sudo yum update -y
               failOnStdErr: false
@@ -152,7 +151,7 @@ stages:
                   sudo  dnf install compat-openssl10 -y
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled:  true
+            enabled:  false
           - task: SSH@0
             displayName: 'install moby-cli-3.0.10+azure-0.x86_64'
             inputs:
