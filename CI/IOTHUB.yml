@@ -111,6 +111,7 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
+                sudo yum update -y
                 sudo yum install container-selinux -y
                 sudo yum install dnf -y
                 sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
