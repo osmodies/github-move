@@ -164,7 +164,7 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
-                  sudo yum install moby-engine-3.0.10+azure-0.x86_64.rpm -y
+                  sudo yum install https://packages.microsoft.com/yumrepos/microsoft-centos7-prod/moby-engine-3.0.10%2Bazure-0.x86_64.rpm -y
               failOnStdErr: false
               readyTimeout: '20000'
           - task: SSH@0
