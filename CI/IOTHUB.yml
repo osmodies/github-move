@@ -103,14 +103,25 @@ stages:
         deploy:
           steps:
           - task: SSH@0
+            displayName: 'Subscribe machine'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                sudo subscription-manager register --username $(redhatuser) --password redhatpassword --auto-attach --force
+              failOnStdErr: false
+              readyTimeout: '20000'
+          - task: SSH@0
             displayName: 'Install Prerequisites rhel7'
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
+                sudo yum update -y
+                sudo yum install dnf-y
+                sudo yum install container-selinux -y
                 sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
                 sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus' -y
-                sudo yum update -y
               failOnStdErr: false
               readyTimeout: '20000'
           - task: SSH@0
@@ -121,9 +132,9 @@ stages:
               inline: |
                 sudo yum install https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/33/Everything/x86_64/os/Packages/c/container-selinux-2.145.0-1.fc33.noarch.rpm -y
                 sudo yum install https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/33/Everything/x86_64/os/Packages/d/dnf-4.2.23-2.fc33.noarch.rpm -y
-                
               failOnStdErr: false
               readyTimeout: '20000'
+            enabled: false
           - task: SSH@0
             displayName: 'Package donwload'
             inputs:
