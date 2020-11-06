@@ -117,6 +117,7 @@ stages:
                 sudo yum install dnf -y
                 sudo yum update -y
               failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
               
           - task: SSH@0
