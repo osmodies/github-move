@@ -153,7 +153,13 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
-                  sudo yum install moby-cli-3.0.10+azure-0.x86_64.rpm -y
+                  if  rpm -q moby-cli
+                  then
+                  echo "installed moby-cli-3.0.10+azure-0.x86_64.rpm"
+                  else
+                  sudo yum install moby-cli-3.0.10+azure-0.x86_64.rpm -y 
+                  fi
+                  
               failOnStdErr: false
               readyTimeout: '20000'
           
