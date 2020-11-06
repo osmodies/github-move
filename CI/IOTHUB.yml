@@ -112,6 +112,17 @@ stages:
                 sudo subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms --enable rhel-7-server-rpms
               failOnStdErr: false
               readyTimeout: '20000'
+          
+          - task: SSH@0
+            displayName: 'yum update rhel7'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                sudo yum update -y
+                sudo yum install container-selinux -y
+              failOnStdErr: false
+              readyTimeout: '20000'
           - task: SSH@0
             displayName: 'Install Prerequisites rhel7'
             inputs:
@@ -242,6 +253,19 @@ stages:
           steps:
           - checkout: self
 
+          - task: SSH@0
+            displayName: 'UnSubscribe machine redhat'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                sudo subscription-manager remove --all
+                sudo subscription-manager unregister
+                sudo subscription-manager clean
+                sudo yum clean all
+                sudo rm -rf /var/cache/yum/
+              failOnStdErr: false
+              readyTimeout: '20000'
           - task: replacetokens@3
             inputs:
               targetFiles: '**/*.tf'
