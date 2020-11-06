@@ -111,10 +111,12 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
-                sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus' -y
                 sudo yum install container-selinux -y
                 sudo yum install dnf -y
+                sudo yum --disablerepo='*' remove 'rhui-azure-rhel7-eus' -y
+                sudo yum --config='https://rhelimage.blob.core.windows.net/repositories/rhui-microsoft-azure-rhel7-eus.config' install 'rhui-azure-rhel7-eus' -y
+                sudo yum-config-manager --enable rhui-rhel-7-server-rhui-extras-rpms
+                sudo yum install https://centos.pkgs.org/7/centos-extras-x86_64/container-selinux-2.119.1-1.c57a6f9.el7.noarch.rpm -y
                 sudo yum update -y
               failOnStdErr: false
               readyTimeout: '20000'
