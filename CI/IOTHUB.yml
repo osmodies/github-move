@@ -109,7 +109,7 @@ stages:
               runOptions: 'inline'
               inline: |
                 sudo subscription-manager register --username $(redhatuser) --password $(redhatpassword) --auto-attach --force
-                sudo subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms
+                sudo subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms --enable rhel-7-server-rpms
               failOnStdErr: false
               readyTimeout: '20000'
           - task: SSH@0
