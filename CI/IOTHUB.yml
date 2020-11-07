@@ -228,6 +228,27 @@ stages:
                   fi
               failOnStdErr: true
               readyTimeout: '20000'
+          
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az iot hub device-identity create --device-id $(var.iotedgedevicename) --edge-enabled --hub-name $(var.resourceiothubname)
+                ConnectionStringIotEdge=$( az iot hub device-identity connection-string show --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname))
+                echo "Connection string= $ConnectionStringiotedge"
+                echo "##vso[task.setvariable variable=ConnectionStringIotEdge]$ConnectionStringIotEdge
+          
+          - task: SSH@0
+            displayName: 'Replace Connection String Config Yaml'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                   sed -i 's/<ADD DEVICE CONNECTION STRING HERE>/$(ConnectionStringIotEdge)/g' metamorphosis.txt
+              failOnStdErr: true
+              readyTimeout: '20000'
 
           - task: SSH@0
             displayName: 'Restart IotEdge'
@@ -240,6 +261,7 @@ stages:
                   sudo systemctl status iotedge
               failOnStdErr: true
               readyTimeout: '20000'
+            enabled: true
 
 - stage: DeleteIACIOT
   displayName: 'DeleteIACIOT'
