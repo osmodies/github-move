@@ -208,7 +208,7 @@ stages:
                   then
                   echo "installed libiothsm-std_1.0.9-1.el7.x86_64.rpm"
                   else
-                  sudo rpm -Uhv libiothsm-std_1.0.9-1.el7.x86_64.rpm -y
+                  sudo rpm -Uhv libiothsm-std_1.0.9-1.el7.x86_64.rpm
                   fi
               failOnStdErr: true
               readyTimeout: '20000'
@@ -224,7 +224,7 @@ stages:
                   then
                   echo "installed iotedge-1.0.9-1.el7.x86_64.rpm"
                   else
-                  sudo rpm -Uhv iotedge-1.0.9-1.el7.x86_64.rpm -y
+                  sudo rpm -Uhv iotedge-1.0.9-1.el7.x86_64.rpm
                   fi
               failOnStdErr: true
               readyTimeout: '20000'
