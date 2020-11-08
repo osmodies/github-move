@@ -238,9 +238,9 @@ stages:
                 az config set extension.use_dynamic_install=yes_without_prompt
                 az extension add --upgrade -n azure-iot
                 az iot hub device-identity create --device-id $(var.iotedgedevicename) --edge-enabled --hub-name $(var.resourceiothubname)
-                ConnectionStringIotEdge= $(az iot hub device-identity connection-string show --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname))
-                echo $ConnectionStringiotedge
-                echo ##vso[task.setvariable variable=ConnectionStringIotEdge]$ConnectionStringIotEdge
+                $ConnectionString=$(az iot hub device-identity connection-string show --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname))
+                echo $ConnectionString
+                echo ##vso[task.setvariable variable=ConnectionStringIotEdge]$ConnectionString
             enabled: true
           - task: SSH@0
             displayName: 'Replace Connection String Config Yaml'
