@@ -204,7 +204,7 @@ stages:
               runOptions: 'inline'
               inline: |
                   cd package-iot
-                  if  rpm -q libiothsm
+                  if  rpm -q libiothsm-std
                   then
                   echo "installed libiothsm-std_1.0.9-1.el7.x86_64.rpm"
                   else
