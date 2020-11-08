@@ -228,20 +228,7 @@ stages:
                   fi
               failOnStdErr: true
               readyTimeout: '20000'
-          
-          - task: AzurePowerShell@5
-            inputs:
-              azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
-              ScriptType: 'InlineScript'
-              Inline: |
-                  az config set extension.use_dynamic_install=yes_without_prompt
-                  az extension add --upgrade -n azure-iot
-                  az iot hub device-identity create --device-id $(var.iotedgedevicename) --edge-enabled --hub-name $(var.resourceiothubname)
-                  $ConnectionStringIotEdge= az iot hub device-identity connection-string show --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname)
-                  write-host "Connection string= $ConnectionStringiotedge"
-                  write-host "##vso[task.setvariable variable=ConnectionStringIotEdge]$ConnectionStringIotEdge
-              azurePowerShellVersion: 'LatestVersion'
-            enabled: false 
+           
           - task: AzureCLI@2
             inputs:
               azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
@@ -261,7 +248,7 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                   sed -i 's/<ADD DEVICE CONNECTION STRING HERE>/$(ConnectionStringIotEdge)/g' metamorphosis.txt
+                   sed -i 's/<ADD DEVICE CONNECTION STRING HERE>/$(ConnectionStringIotEdge)/g' /etc/iotedge/config.yaml
               failOnStdErr: true
               readyTimeout: '20000'
 
