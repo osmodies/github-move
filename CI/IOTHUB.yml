@@ -248,7 +248,7 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                   sed -i 's/<ADD DEVICE CONNECTION STRING HERE>/$(ConnectionStringIotEdge)/g' /etc/iotedge/config.yaml
+                   sudo sed -i 's/<ADD DEVICE CONNECTION STRING HERE>/$(ConnectionStringIotEdge)/g' /etc/iotedge/config.yaml
               failOnStdErr: true
               readyTimeout: '20000'
 
