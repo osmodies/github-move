@@ -102,6 +102,7 @@ stages:
       runOnce:
         deploy:
           steps:
+          - checkout: self
           - task: SSH@0
             displayName: 'Subscribe machine redhat'
             inputs:
@@ -270,6 +271,17 @@ stages:
               failOnStdErr: true
               readyTimeout: '20000'
             enabled: true
+
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az iot edge set-modules --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname) --content "$(System.DefaultWorkingDirectory)/IOTHUB/azureiotedge-simulated-temperature-sensor.json"
+                az iot hub module-identity list --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname)
+            enabled: true
+            
 
 - stage: DeleteIACIOT
   displayName: 'DeleteIACIOT'
