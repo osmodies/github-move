@@ -26,6 +26,7 @@ resource "azurerm_network_interface" "mynetworkinterface" {
     subnet_id                     = data.azurerm_subnet.mynetwork.id
     private_ip_address_allocation = "Static"
     private_ip_address            = "__var.resourcevmipprivate__"
+    public_ip_address             = "__var.ipvmlinux__"
   }
 }
 #Storage account
