@@ -114,16 +114,7 @@ stages:
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
-          - task: SSH@0
-            displayName: 'yum update rhel7'
-            inputs:
-              sshEndpoint: 'vmiotedge'
-              runOptions: 'inline'
-              inline: |
-                sudo yum update -y
-              failOnStdErr: false
-              readyTimeout: '20000'
-            enabled:  true
+
           - task: SSH@0
             displayName: 'Install Prerequisites rhel7'
             inputs:
