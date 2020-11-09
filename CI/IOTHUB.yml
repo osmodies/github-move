@@ -318,8 +318,8 @@ stages:
               runOptions: 'inline'
               inline: |          
                   cd epmcert
-                  ./certGen.sh create_root_and_intermediate
-              failOnStdErr: true
+                  sudo ./certGen.sh create_root_and_intermediate
+              failOnStdErr: false
               readyTimeout: '20000'
           - task: SSH@0
             displayName: 'CERTIFICATE COMUNICATION ENCRYPT BETWEEN MODULES'
@@ -328,8 +328,8 @@ stages:
               runOptions: 'inline'
               inline: |          
                   cd epmcert
-                  ./certGen.sh create_edge_device_ca_certificate ["Hostname"] 
-              failOnStdErr: true
+                  sudo ./certGen.sh create_edge_device_ca_certificate ["Hostname"] 
+              failOnStdErr: false
               readyTimeout: '20000'
           
           - task: SSH@0
@@ -339,8 +339,8 @@ stages:
               runOptions: 'inline'
               inline: |          
                   cd epmcert
-                  ./certGen.sh create_edge_device_identity_certificate ["Hostname"]
-              failOnStdErr: true
+                  sudo ./certGen.sh create_edge_device_identity_certificate ["Hostname"]
+              failOnStdErr: false
               readyTimeout: '20000'
           
           - task: SSH@0
@@ -350,7 +350,7 @@ stages:
               runOptions: 'inline'
               inline: |          
                   cd epmcert
-                  mkdir /etc/iotedge/epmcerts
+                  mkdir -p /etc/iotedge/epmcerts
                   cd private
                   sudo cp iot-edge-device-ca-epm-[HOSTNAME].pem /etc/iotedge/epmcerts
                   sudo cp azure-iot-test-only.root.ca.cert.pem /etc/iotedge/epmcerts
@@ -367,10 +367,7 @@ stages:
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
-              inline: |          
-                  cd epmcert
-                  mkdir /etc/iotedge/epmcerts
-                  cd private
+              inline: |
                   device_ca_cert= "file:///etc/iotedge/epmcerts/ iot-edge-device-ca-[HOSTNAME]-full-chain.cert.pem"
                   device_ca_pk="file:///etc/iotedge/epmcerts/ iot-edge-device-ca-[HOSTNAME].key.pem"
                   trusted_ca_certs="file:///etc/iotedge/epmcerts/azure-iot-test-only.root.ca.cert.pem"
