@@ -16,6 +16,11 @@ data "azurerm_subnet" "mynetwork" {
   resource_group_name  = "__var.azurerm_resourcegroupname__"
 }
 
+data "azurerm_public_ip" "ippublic" {
+  name                = "__var.azurerm_ipname__"
+  resource_group_name = "__var.azurerm_resourcegroupname__"
+}
+
 resource "azurerm_network_interface" "mynetworkinterface" {
   name                = "__var.resourcenetworkinterface__"
   location            = data.azurerm_resource_group.iotresourcegroup.location
@@ -26,7 +31,7 @@ resource "azurerm_network_interface" "mynetworkinterface" {
     subnet_id                     = data.azurerm_subnet.mynetwork.id
     private_ip_address_allocation = "Static"
     private_ip_address            = "__var.resourcevmipprivate__"
-    public_ip_address             = "__var.ipvmlinux__"
+    public_ip_address             = data.azurerm_public_ip.ippublic.ip_address
   }
 }
 #Storage account
