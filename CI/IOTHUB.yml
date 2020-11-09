@@ -28,7 +28,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: none
+          - checkout: self
           - task: replacetokens@3
             inputs:
               targetFiles: '**/*.tf'
@@ -40,13 +40,13 @@ stages:
               tokenSuffix: '__'
               useLegacyPattern: false
               enableTelemetry: true
-            enabled: false
+            enabled: true
 
           - task: TerraformInstaller@0
             displayName: 'terraform installer'
             inputs:
               terraformVersion: '0.13.5'
-            enabled: false
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform init'
@@ -54,19 +54,19 @@ stages:
               provider: 'azurerm'
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              backendServiceArm: '$(var.serviceconnection)'
+              backendServiceArm: '$(var.serviceconnection2)'
               backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
               backendAzureRmContainerName: '$(var.terraformContainername)'
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: false
+            enabled: true
           - task: TerraformTaskV1@0
             displayName: 'Terraform validate'
             inputs:
               provider: 'azurerm'
               command: 'validate'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-            enabled: false
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform Plan'
@@ -74,8 +74,8 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              environmentServiceNameAzureRM: '$(var.serviceconnection)'
-            enabled: false
+              environmentServiceNameAzureRM: '$(var.serviceconnection2)'
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform : apply -auto-approve'
@@ -83,12 +83,12 @@ stages:
               command: apply
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               commandOptions: '-auto-approve'
-              environmentServiceNameAzureRM: '$(var.serviceconnection)'
+              environmentServiceNameAzureRM: '$(var.serviceconnection2)'
               backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
               backendAzureRmContainerName: $(var.terraformContainername)
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: false
+            enabled: true
 
 - stage: Installmachine
   displayName: 'Install Machine Components'
@@ -238,7 +238,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Create IOT Device'
             inputs:
-              azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              azureSubscription: '$(var.serviceconnection2)'
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
@@ -276,7 +276,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'IOT Set module simulated-temperature-sensor'
             inputs:
-              azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              azureSubscription: '$(var.serviceconnection2)'
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
@@ -408,7 +408,7 @@ stages:
           - task: AzureCLI@2
             displayName: 'Add Link iothub to  DPS'
             inputs:
-              azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              azureSubscription: '$(var.serviceconnection2)'
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
@@ -468,7 +468,7 @@ stages:
               provider: 'azurerm'
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              backendServiceArm: '$(var.serviceconnection)'
+              backendServiceArm: '$(var.serviceconnection2)'
               backendAzureRmResourceGroupName: '$(var.terraformstoragerg)'
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
               backendAzureRmContainerName: '$(var.terraformContainername)'
@@ -480,7 +480,7 @@ stages:
               provider: 'azurerm'
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              environmentServiceNameAzureRM: '$(var.serviceconnection)'
+              environmentServiceNameAzureRM: '$(var.serviceconnection2)'
             enabled: true
           - task: TerraformTaskV1@0
             displayName: 'Terraform destroy'
@@ -488,5 +488,5 @@ stages:
               provider: 'azurerm'
               command: 'destroy'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-              environmentServiceNameAzureRM: '$(var.serviceconnection)'
+              environmentServiceNameAzureRM: '$(var.serviceconnection2)'
             enabled: true
