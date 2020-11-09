@@ -293,7 +293,7 @@ stages:
                   sudo firewall-cmd --zone=public --add-port=5671/tcp --permanent
                   sudo firewall-cmd --zone=public --add-port=8883/tcp --permanent
                   sudo firewall-cmd --zone=public --add-port=443/tcp --permanent
-              failOnStdErr: true
+              failOnStdErr: false
               readyTimeout: '20000'
           
           - task: SSH@0
