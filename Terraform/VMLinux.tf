@@ -31,7 +31,7 @@ resource "azurerm_network_interface" "mynetworkinterface" {
     subnet_id                     = data.azurerm_subnet.mynetwork.id
     private_ip_address_allocation = "Static"
     private_ip_address            = "__var.resourcevmipprivate__"
-    public_ip_address             = data.azurerm_public_ip.ippublic.ip_address
+    public_ip_address_id             = data.azurerm_public_ip.ippublic.id
   }
 }
 #Storage account
