@@ -309,10 +309,11 @@ stages:
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
-              inline: |          
-                  cd epmcert
-                  sudo ./certGen.sh create_root_and_intermediate
+              inline: |
+                cd epmcert
+                sudo ./certGen.sh create_root_and_intermediate
               failOnStdErr: false
+              interactiveSession: true
               readyTimeout: '20000'
           - task: SSH@0
             displayName: 'CERTIFICATE COMUNICATION ENCRYPT BETWEEN MODULES'
