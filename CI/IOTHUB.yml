@@ -236,6 +236,7 @@ stages:
             enabled: false
            
           - task: AzureCLI@2
+            displayName: 'Create IOT Device'
             inputs:
               azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
               scriptType: 'bash'
@@ -273,6 +274,7 @@ stages:
             enabled: true
 
           - task: AzureCLI@2
+            displayName: 'IOT Set module simulated-temperature-sensor'
             inputs:
               azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
               scriptType: 'bash'
@@ -281,7 +283,32 @@ stages:
                 az iot edge set-modules --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname) --content "$(System.DefaultWorkingDirectory)/IOTHUB/azureiotedge-simulated-temperature-sensor.json"
                 az iot hub module-identity list --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname)
             enabled: true
-            
+          
+          - task: SSH@0
+            displayName: 'Firewall'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |          
+                  sudo firewall-cmd --zone=public --add-port=5671/tcp --permanent
+                  sudo firewall-cmd --zone=public --add-port=8883/tcp --permanent
+                  sudo firewall-cmd --zone=public --add-port=443/tcp --permanent
+              failOnStdErr: true
+              readyTimeout: '20000'
+          
+          - task: SSH@0
+            displayName: 'Certificados'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |          
+                  mkdir epmcert
+                  curl https://raw.githubusercontent.com/Azure/iotedge/master/tools/CACertificates/certGen.sh --output certGen.sh
+                  curl https://raw.githubusercontent.com/Azure/azure-iot-sdk-c/master/tools/CACertificates/openssl_device_intermediate_ca.cnf --output openssl_device_intermediate_ca.cnf
+                  curl https://raw.githubusercontent.com/Azure/iotedge/master/tools/CACertificates/openssl_root_ca.cnf --output openssl_root_ca.cnf
+                  chmod 700 certGen.sh
+              failOnStdErr: true
+              readyTimeout: '20000'
 
 - stage: DeleteIACIOT
   displayName: 'DeleteIACIOT'
