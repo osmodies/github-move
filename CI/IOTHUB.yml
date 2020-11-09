@@ -297,7 +297,7 @@ stages:
               readyTimeout: '20000'
           
           - task: SSH@0
-            displayName: 'Certificados'
+            displayName: 'Donwloads file for Generate Certificates'
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
@@ -309,6 +309,115 @@ stages:
                   chmod 700 certGen.sh
               failOnStdErr: true
               readyTimeout: '20000'
+          
+          - task: SSH@0
+            displayName: 'CERTIFICATE ROOT CA'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |          
+                  cd epmcert
+                  ./certGen.sh create_root_and_intermediate
+              failOnStdErr: true
+              readyTimeout: '20000'
+          - task: SSH@0
+            displayName: 'CERTIFICATE COMUNICATION ENCRYPT BETWEEN MODULES'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |          
+                  cd epmcert
+                  ./certGen.sh create_edge_device_ca_certificate ["Hostname"] 
+              failOnStdErr: true
+              readyTimeout: '20000'
+          
+          - task: SSH@0
+            displayName: 'CERTIFICATE IDENTITY FOR DPS CONFIGURATION'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |          
+                  cd epmcert
+                  ./certGen.sh create_edge_device_identity_certificate ["Hostname"]
+              failOnStdErr: true
+              readyTimeout: '20000'
+          
+          - task: SSH@0
+            displayName: 'Configure IOTEDGE wint Self-Signed certificates'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |          
+                  cd epmcert
+                  mkdir /etc/iotedge/epmcerts
+                  cd private
+                  sudo cp iot-edge-device-ca-epm-[HOSTNAME].pem /etc/iotedge/epmcerts
+                  sudo cp azure-iot-test-only.root.ca.cert.pem /etc/iotedge/epmcerts
+                  sudo cp iot-edge-device-ca-[HOSTNAME]-full-chain.cert.pem /etc/iotedge/epmcerts
+                  sudo cp iot-edge-device-identity-[HOSTNAME].cert.pem /etc/iotedge/epmcerts
+                  sudo cp iot-edge-device-ca-[HOSTNAME].key.pem /etc/iotedge/epmcerts
+                  sudo cp iot-edge-device-identity-[HOSTNAME]-full-chain.cert.pem /etc/iotedge/epmcerts
+                  sudo cp iot-edge-device-identity-[HOSTNAME].key.pem /etc/iotedge/epmcerts
+              failOnStdErr: true
+              readyTimeout: '20000'
+
+          - task: SSH@0
+            displayName: 'Configure IOTEDGE config.yml'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |          
+                  cd epmcert
+                  mkdir /etc/iotedge/epmcerts
+                  cd private
+                  device_ca_cert= "file:///etc/iotedge/epmcerts/ iot-edge-device-ca-[HOSTNAME]-full-chain.cert.pem"
+                  device_ca_pk="file:///etc/iotedge/epmcerts/ iot-edge-device-ca-[HOSTNAME].key.pem"
+                  trusted_ca_certs="file:///etc/iotedge/epmcerts/azure-iot-test-only.root.ca.cert.pem"
+                  sudo sed -i "s/<ADD URI TO DEVICE CA CERTIFICATE HERE>/$device_ca_cert/g" /etc/iotedge/config.yaml
+                  sudo sed -i "s/<ADD URI TO DEVICE CA PRIVATE KEY HERE>/$device_ca_pk/g" /etc/iotedge/config.yaml
+                  sudo sed -i "s/<ADD URI TO TRUSTED CA CERTIFICATES HERE>/$trusted_ca_certs/g" /etc/iotedge/config.yaml
+                  sudo sed -i "s/# certificates:/certificates:/g" /etc/iotedge/config.yaml
+                  sudo sed -i "s/#   device_ca_cert:/  device_ca_cert:/g" /etc/iotedge/config.yaml
+                  sudo sed -i "s/#   device_ca_pk:/  device_ca_pk:/g" /etc/iotedge/config.yaml
+                  sudo sed -i "s/#   trusted_ca_certs:/  trusted_ca_certs/g" /etc/iotedge/config.yaml
+              failOnStdErr: true
+              readyTimeout: '20000'
+          
+          - task: SSH@0
+            displayName: 'Restart IotEdge'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                  cd package-iot
+                  sudo systemctl restart iotedge
+              failOnStdErr: true
+              readyTimeout: '20000'
+            enabled: true
+
+          - task: SSH@0
+            displayName: 'IotEdge Check'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                  cd package-iot
+                  sudo iotedge check
+              failOnStdErr: true
+              readyTimeout: '20000'
+            enabled: true
+
+          - task: AzureCLI@2
+            displayName: 'Add Link iothub to  DPS'
+            inputs:
+              azureSubscription: 'VS Ent-MPN- ODIAZ (972e401d-226e-48c7-a463-6d562c39edda)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                iothubconnectionstring= "$(az iot hub connection-string show -n $(var.resourceiothubname) -o tsv)
+                az iot dps linked-hub create --dps-name $(var.resourceiotdps) --resource-group $(var.resourcegroupname) --connection-string $iothubconnectionstring --location $(var.resourcegroupnamelocation)
+            enabled: true
+
 
 - stage: DeleteIACIOT
   displayName: 'DeleteIACIOT'
