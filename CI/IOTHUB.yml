@@ -302,7 +302,7 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |          
-                  mkdir -p  epmcert
+                  sudo mkdir -p  epmcert
                   cd epmcert
                   sudo curl https://raw.githubusercontent.com/Azure/iotedge/master/tools/CACertificates/certGen.sh --output certGen.sh
                   sudo curl https://raw.githubusercontent.com/Azure/azure-iot-sdk-c/master/tools/CACertificates/openssl_device_intermediate_ca.cnf --output openssl_device_intermediate_ca.cnf
