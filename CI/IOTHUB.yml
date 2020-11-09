@@ -28,7 +28,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: none
+          - checkout: self
           - task: replacetokens@3
             inputs:
               targetFiles: '**/*.tf'
