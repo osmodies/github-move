@@ -311,10 +311,10 @@ stages:
               runOptions: 'inline'
               inline: |
                 cd epmcert
-                sudo sed -i "s/pass:${ROOT_CA_PASSWORD}/pass:$(sshpassphrase)/g" certGen.sh
+                sudo sed -i "1234/$(sshpassphrase)/g" certGen.sh
                 sudo ./certGen.sh create_root_and_intermediate
               failOnStdErr: false
-              interactiveSession: true
+              interactiveSession: false
               readyTimeout: '20000'
           - task: SSH@0
             displayName: 'CERTIFICATE COMUNICATION ENCRYPT BETWEEN MODULES'
