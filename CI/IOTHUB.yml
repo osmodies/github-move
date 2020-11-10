@@ -28,7 +28,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: none
+          - checkout: self
           - task: replacetokens@3
             inputs:
               targetFiles: '**/*.tf'
@@ -40,13 +40,13 @@ stages:
               tokenSuffix: '__'
               useLegacyPattern: false
               enableTelemetry: true
-            enabled: false
+            enabled: true
 
           - task: TerraformInstaller@0
             displayName: 'terraform installer'
             inputs:
               terraformVersion: '0.13.5'
-            enabled: false
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform init'
@@ -59,14 +59,14 @@ stages:
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
               backendAzureRmContainerName: '$(var.terraformContainername)'
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: false
+            enabled: true
           - task: TerraformTaskV1@0
             displayName: 'Terraform validate'
             inputs:
               provider: 'azurerm'
               command: 'validate'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-            enabled: false
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform Plan'
@@ -75,7 +75,7 @@ stages:
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               environmentServiceNameAzureRM: '$(var.serviceconnection2)'
-            enabled: false
+            enabled: true
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform : apply -auto-approve'
@@ -88,7 +88,7 @@ stages:
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
               backendAzureRmContainerName: $(var.terraformContainername)
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: false
+            enabled: true
 
 - stage: Installmachine
   displayName: 'Install Machine Components'
@@ -113,7 +113,7 @@ stages:
                 sudo subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms --enable rhel-7-server-rpms
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
 
           - task: SSH@0
             displayName: 'Install Prerequisites rhel7'
@@ -128,7 +128,7 @@ stages:
                 sudo yum install dnf -y
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
 
           - task: SSH@0
             displayName: 'Package donwload'
@@ -146,7 +146,7 @@ stages:
               failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
 
           - task: SSH@0
             displayName: 'install compat-openssl10'
@@ -173,7 +173,7 @@ stages:
                   fi
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
           
           - task: SSH@0
             displayName: 'install moby-engine-3.0.10+azure-0.x86_64' 
@@ -190,7 +190,7 @@ stages:
                   fi
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
           - task: SSH@0
             displayName: 'rpm -Uhv libiothsm-std_1.0.9-1.el7'
             inputs:
@@ -206,7 +206,7 @@ stages:
                   fi
               failOnStdErr: true
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
           
           - task: SSH@0
             displayName: 'rpm -Uhv iotedge-1.0.9-1.el7.x86_64'
@@ -223,7 +223,7 @@ stages:
                   fi
               failOnStdErr: true
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
            
           - task: AzureCLI@2
             displayName: 'Create IOT Device'
@@ -238,7 +238,7 @@ stages:
                 ConnectionString="$(az iot hub device-identity connection-string show --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname) -o tsv)"
                 echo "$ConnectionString"
                 echo "##vso[task.setvariable variable=ConnectionStringIotEdge]$ConnectionString"
-            enabled: false
+            enabled: true
           - task: SSH@0
             displayName: 'Replace Connection String Config Yaml'
             inputs:
@@ -249,7 +249,7 @@ stages:
                   sudo sed -i "s/<ADD DEVICE CONNECTION STRING HERE>/$(ConnectionStringIotEdge)/g" /etc/iotedge/config.yaml
               failOnStdErr: true
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
 
           - task: SSH@0
             displayName: 'Restart IotEdge'
@@ -262,7 +262,7 @@ stages:
                   sudo systemctl status iotedge
               failOnStdErr: true
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
 
           - task: AzureCLI@2
             displayName: 'IOT Set module simulated-temperature-sensor'
@@ -273,7 +273,7 @@ stages:
               inlineScript: |
                 az iot edge set-modules --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname) --content "$(System.DefaultWorkingDirectory)/IOTHUB/azureiotedge-simulated-temperature-sensor.json"
                 az iot hub module-identity list --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname)
-            enabled: false
+            enabled: true
           
           - task: SSH@0
             displayName: 'Firewall'
@@ -286,7 +286,7 @@ stages:
                   sudo firewall-cmd --zone=public --add-port=443/tcp --permanent
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
           
           - task: SSH@0
             displayName: 'Donwloads file for Generate Certificates'
