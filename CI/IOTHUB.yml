@@ -314,7 +314,7 @@ stages:
                 sudo sed -i "s/1234/$(sshpassphrase)/g" certGen.sh
                 sudo ./certGen.sh create_root_and_intermediate
               failOnStdErr: false
-              interactiveSession: false
+              interactiveSession: true
               readyTimeout: '20000'
           - task: SSH@0
             displayName: 'CERTIFICATE COMUNICATION ENCRYPT BETWEEN MODULES'
