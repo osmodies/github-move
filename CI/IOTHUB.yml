@@ -311,7 +311,7 @@ stages:
               runOptions: 'inline'
               inline: |
                 cd epmcert
-                sudo sed -i "1234/$(sshpassphrase)/g" certGen.sh
+                sudo sed -i "s/1234/$(sshpassphrase)/g" certGen.sh
                 sudo ./certGen.sh create_root_and_intermediate
               failOnStdErr: false
               interactiveSession: false
