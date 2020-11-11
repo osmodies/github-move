@@ -304,27 +304,7 @@ stages:
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
-          
-          - task: SSH@0
-            inputs:
-              sshEndpoint: 'vmiotedge'
-              runOptions: 'commands'
-              commands: |
-                cd epmcert
-                sudo /home/adminiotedge/epmcert/certGen.sh create_root_and_intermediate
-              failOnStdErr: false
-              readyTimeout: '20000'
-          - task: SSH@0
-            displayName: 'CERTIFICATE ROOT CA'
-            inputs:
-              sshEndpoint: 'vmiotedge'
-              runOptions: 'script'
-              scriptPath: '$(System.DefaultWorkingDirectory)/IOTEDGE/certGen.sh'
-              args: 'create_root_and_intermediate'
-              failOnStdErr: false
-              readyTimeout: '20000'
-            enabled: false
-
+         
           - task: SSH@0
             displayName: 'CERTIFICATE ROOT CA'
             inputs:
@@ -332,11 +312,11 @@ stages:
               runOptions: 'inline'
               inline: |
                 cd epmcert
-                sudo ./certGen.sh create_root_and_intermediate
-              failOnStdErr: true
+                sudo ./certGen.sh create_root_and_intermediate -x
+              failOnStdErr: false
               interactiveSession: true
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
           - task: SSH@0
             displayName: 'CERTIFICATE COMUNICATION ENCRYPT BETWEEN MODULES'
             inputs:
