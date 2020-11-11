@@ -311,7 +311,7 @@ stages:
               runOptions: 'commands'
               commands: |
                 cd epmcert
-                sudo ./certGen.sh create_root_and_intermediate
+                sudo /home/adminiotedge/epmcert/certGen.sh create_root_and_intermediate
               failOnStdErr: false
               readyTimeout: '20000'
           - task: SSH@0
