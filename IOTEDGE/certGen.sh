@@ -10,7 +10,7 @@
 # These certs are intended only to help demonstrate and prototype CA certs.
 ###############################################################################
 set -e
-
+cd epmcert
 ###############################################################################
 # Define Variables
 ###############################################################################
@@ -104,8 +104,7 @@ function generate_root_ca()
             ${password_cmd} \
             -out ${key_file} \
             ${RSA_CA_KEY_BITS_LENGTH}
-    
-    #[ $? -eq 0 ] || exit $?
+    [ $? -eq 0 ] || exit $?
     chmod 400 ${key_file}
     [ $? -eq 0 ] || exit $?
 
