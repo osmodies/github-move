@@ -309,7 +309,7 @@ stages:
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'script'
-              scriptPath: '/home/adminiotedge/epmcert/certGen.sh'
+              scriptPath: '$(System.DefaultWorkingDirectory)/IOTEDGE/certGen.sh'
               args: 'create_root_and_intermediate'
               failOnStdErr: false
               readyTimeout: '20000'
