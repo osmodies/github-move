@@ -299,7 +299,6 @@ stages:
                   sudo curl https://raw.githubusercontent.com/Azure/iotedge/master/tools/CACertificates/certGen.sh --output certGen.sh
                   sudo curl https://raw.githubusercontent.com/Azure/azure-iot-sdk-c/master/tools/CACertificates/openssl_device_intermediate_ca.cnf --output openssl_device_intermediate_ca.cnf
                   sudo curl https://raw.githubusercontent.com/Azure/iotedge/master/tools/CACertificates/openssl_root_ca.cnf --output openssl_root_ca.cnf
-                  sudo sed -i "s/1234/$(sshpassphrase)/g" certGen.sh
                   sudo chmod 700 certGen.sh
               failOnStdErr: false
               readyTimeout: '20000'
@@ -312,7 +311,9 @@ stages:
               runOptions: 'inline'
               inline: |
                 cd epmcert
-                sudo bash -x ./certGen.sh create_root_and_intermediate
+                sudo sed -i "s/1234/$(sshpassphrase)/g" certGen.sh
+                sudo sed -i "s/false/true/g" certGen.sh
+                sudo ./certGen.sh create_root_and_intermediate
               failOnStdErr: true
               interactiveSession: true
               readyTimeout: '20000'
