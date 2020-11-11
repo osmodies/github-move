@@ -314,7 +314,7 @@ stages:
                 cd epmcert
                 sudo bash -x ./certGen.sh create_root_and_intermediate
               failOnStdErr: true
-              interactiveSession: false
+              interactiveSession: true
               readyTimeout: '20000'
             enabled: true
           - task: SSH@0
