@@ -299,11 +299,21 @@ stages:
                   sudo curl https://raw.githubusercontent.com/Azure/iotedge/master/tools/CACertificates/certGen.sh --output certGen.sh
                   sudo curl https://raw.githubusercontent.com/Azure/azure-iot-sdk-c/master/tools/CACertificates/openssl_device_intermediate_ca.cnf --output openssl_device_intermediate_ca.cnf
                   sudo curl https://raw.githubusercontent.com/Azure/iotedge/master/tools/CACertificates/openssl_root_ca.cnf --output openssl_root_ca.cnf
+                  sudo sed -i "s/1234/$(sshpassphrase)/g" certGen.sh
                   sudo chmod 700 certGen.sh
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
-          
+          - task: SSH@0
+            displayName: 'CERTIFICATE ROOT CA'
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'script'
+              scriptPath: '/home/adminiotedge/epmcert/certGen.sh'
+              args: 'create_root_and_intermediate'
+              failOnStdErr: false
+              readyTimeout: '20000'
+
           - task: SSH@0
             displayName: 'CERTIFICATE ROOT CA'
             inputs:
@@ -311,11 +321,11 @@ stages:
               runOptions: 'inline'
               inline: |
                 cd epmcert
-                sudo sed -i "s/1234/$(sshpassphrase)/g" certGen.sh
                 sudo ./certGen.sh create_root_and_intermediate
               failOnStdErr: true
               interactiveSession: true
               readyTimeout: '20000'
+            enabled: false
           - task: SSH@0
             displayName: 'CERTIFICATE COMUNICATION ENCRYPT BETWEEN MODULES'
             inputs:
