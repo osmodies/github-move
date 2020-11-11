@@ -314,8 +314,8 @@ stages:
                 sudo sed -i "s/1234/$(sshpassphrase)/g" certGen.sh
                 sudo sed -i "s/false/true/g" certGen.sh
                 sudo ./certGen.sh create_root_and_intermediate
-              failOnStdErr: true
-              interactiveSession: true
+              failOnStdErr: false
+              interactiveSession: false
               readyTimeout: '20000'
             enabled: true
           - task: SSH@0
