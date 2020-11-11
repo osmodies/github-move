@@ -312,7 +312,7 @@ stages:
               runOptions: 'inline'
               inline: |
                 cd epmcert
-                sudo ./certGen.sh create_root_and_intermediate
+                sudo bash -x ./certGen.sh create_root_and_intermediate
               failOnStdErr: false
               interactiveSession: false
               readyTimeout: '20000'
