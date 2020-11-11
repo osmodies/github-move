@@ -147,7 +147,7 @@ stages:
               interactiveSession: true
               readyTimeout: '20000'
             enabled: true
-
+## no cambiar a true
           - task: SSH@0
             displayName: 'install compat-openssl10'
             inputs:
@@ -157,7 +157,7 @@ stages:
                   sudo  dnf install compat-openssl10 -y
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: true
+            enabled: false
           - task: SSH@0
             displayName: 'install moby-cli-3.0.10+azure-0.x86_64'
             inputs:
