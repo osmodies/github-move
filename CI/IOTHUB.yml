@@ -366,9 +366,12 @@ stages:
                   device_ca_cert= "file:///etc/iotedge/epmcerts/iot-edge-device-ca-$(var.resourcevmname)-full-chain.cert.pem"
                   device_ca_pk="file:///etc/iotedge/epmcerts/iot-edge-device-ca-$(var.resourcevmname).key.pem"
                   trusted_ca_certs="file:///etc/iotedge/epmcerts/azure-iot-test-only.root.ca.cert.pem"
-                  sudo sed -i "s/<ADD URI TO DEVICE CA CERTIFICATE HERE>/$device_ca_cert/g" /etc/iotedge/config.yaml
-                  sudo sed -i "s/<ADD URI TO DEVICE CA PRIVATE KEY HERE>/$device_ca_pk/g" /etc/iotedge/config.yaml
-                  sudo sed -i "s/<ADD URI TO TRUSTED CA CERTIFICATES HERE>/$trusted_ca_certs/g" /etc/iotedge/config.yaml
+                  echo "$device_ca_cert"
+                  echo "$device_ca_pk"
+                  echo "$trusted_ca_certs"
+                  sudo sed -i "s/<ADD URI TO DEVICE CA CERTIFICATE HERE>/"$device_ca_cert"/g" /etc/iotedge/config.yaml
+                  sudo sed -i "s/<ADD URI TO DEVICE CA PRIVATE KEY HERE>/"$device_ca_pk"/g" /etc/iotedge/config.yaml
+                  sudo sed -i "s/<ADD URI TO TRUSTED CA CERTIFICATES HERE>/"$trusted_ca_certs"/g" /etc/iotedge/config.yaml
                   sudo sed -i "s/# certificates:/certificates:/g" /etc/iotedge/config.yaml
                   sudo sed -i "s/#   device_ca_cert:/  device_ca_cert:/g" /etc/iotedge/config.yaml
                   sudo sed -i "s/#   device_ca_pk:/  device_ca_pk:/g" /etc/iotedge/config.yaml
