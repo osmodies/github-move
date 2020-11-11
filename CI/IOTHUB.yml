@@ -351,13 +351,13 @@ stages:
                   cd private
                   pwd
                   cd "/home/adminiotedge/epmcert/private"
-                  sudo cp "iot-edge-device-ca-epm-$(var.resourcevmname).pem" /etc/iotedge/epmcerts/
-                  sudo cp "azure-iot-test-only.root.ca.cert.pem" /etc/iotedge/epmcerts/
-                  sudo cp "iot-edge-device-ca-$(var.resourcevmname)-full-chain.cert.pem" /etc/iotedge/epmcerts/
-                  sudo cp "iot-edge-device-identity-$(var.resourcevmname).cert.pem" /etc/iotedge/epmcerts/
+                  sudo cp "iot-edge-device-ca-$(var.resourcevmname).pem" /etc/iotedge/epmcerts/
                   sudo cp "iot-edge-device-ca-$(var.resourcevmname).key.pem" /etc/iotedge/epmcerts/
                   sudo cp "iot-edge-device-identity-$(var.resourcevmname)-full-chain.cert.pem" /etc/iotedge/epmcerts/
                   sudo cp "iot-edge-device-identity-$(var.resourcevmname).key.pem" /etc/iotedge/epmcerts/
+                  sudo cp "~/epmcert/certs/iot-edge-device-ca-$(var.resourcevmname)-full-chain.cert.pem" /etc/iotedge/epmcerts/
+                  sudo cp "~/epmcert/certs/iot-edge-device-identity-$(var.resourcevmname).cert.pem" /etc/iotedge/epmcerts/
+                  sudo cp "~/epmcert/certs/azure-iot-test-only.root.ca.cert.pem" /etc/iotedge/epmcerts/
               failOnStdErr: true
               readyTimeout: '20000'
 
