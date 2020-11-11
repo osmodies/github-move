@@ -304,6 +304,16 @@ stages:
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
+          
+          - task: SSH@0
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'commands'
+              commands: |
+                cd epmcert
+                sudo ./certGen.sh create_root_and_intermediate
+              failOnStdErr: false
+              readyTimeout: '20000'
           - task: SSH@0
             displayName: 'CERTIFICATE ROOT CA'
             inputs:
@@ -313,6 +323,7 @@ stages:
               args: 'create_root_and_intermediate'
               failOnStdErr: false
               readyTimeout: '20000'
+            enabled: false
 
           - task: SSH@0
             displayName: 'CERTIFICATE ROOT CA'
