@@ -327,7 +327,7 @@ stages:
                   sudo ./certGen.sh create_edge_device_ca_certificate "$(var.resourcevmname)"
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: false
+            enabled: true
           - task: SSH@0
             displayName: 'CERTIFICATE IDENTITY FOR DPS CONFIGURATION'
             inputs:
