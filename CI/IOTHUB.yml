@@ -87,7 +87,7 @@ stages:
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
               backendAzureRmContainerName: $(var.terraformContainername)
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: false
+            enabled: true
 
 - stage: Installmachine
   displayName: 'Install Machine Components'
