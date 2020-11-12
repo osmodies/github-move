@@ -147,7 +147,7 @@ stages:
               interactiveSession: true
               readyTimeout: '20000'
             enabled: true
-## no cambiar a true
+## no cambiar a true la siguiente tarea
           - task: SSH@0
             displayName: 'install compat-openssl10'
             inputs:
@@ -246,7 +246,7 @@ stages:
               runOptions: 'inline'
               inline: |          
                   echo "$(ConnectionStringIotEdge)"
-                  sudo sed -i "s/<ADD DEVICE CONNECTION STRING HERE>/$(ConnectionStringIotEdge)/g" /etc/iotedge/config.yaml
+                  sudo sed -i 's/<ADD DEVICE CONNECTION STRING HERE>/$(ConnectionStringIotEdge)/g' /etc/iotedge/config.yaml
               failOnStdErr: true
               readyTimeout: '20000'
             enabled: true
