@@ -272,7 +272,7 @@ stages:
               inlineScript: |
                 az iot edge set-modules --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname) --content "$(System.DefaultWorkingDirectory)/IOTHUB/azureiotedge-simulated-temperature-sensor.json"
                 az iot hub module-identity list --device-id $(var.iotedgedevicename) --hub-name $(var.resourceiothubname)
-            enabled: false
+            enabled: true
           
           - task: SSH@0
             displayName: 'Firewall'
