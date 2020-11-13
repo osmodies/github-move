@@ -245,7 +245,7 @@ stages:
               runOptions: 'inline'
               inline: |          
                   echo "$(ConnectionStringIotEdge)"
-                  sudo sed -i 's/"<ADD DEVICE CONNECTION STRING HERE>"/"$(ConnectionStringIotEdge)"/g' /etc/iotedge/config.yaml
+                  sudo sed -i 's|"<ADD DEVICE CONNECTION STRING HERE>"|"$(ConnectionStringIotEdge)"|g' /etc/iotedge/config.yaml
               failOnStdErr: true
               readyTimeout: '20000'
             enabled: true
@@ -371,15 +371,15 @@ stages:
                   echo "$device_ca_cert"
                   sudo sed -i "s/#   device_ca_cert:/  device_ca_cert:/g" /etc/iotedge/config.yaml
                   echo "device_ca_cert1"
-                  sudo sed -i 's/device_ca_cert: "<ADD URI TO DEVICE CA CERTIFICATE HERE>"/device_ca_cert: "file:///etc/iotedge/epmcerts/iot-edge-device-ca-$(var.resourcevmname)-full-chain.cert.pem"/g' /etc/iotedge/config.yaml
+                  sudo sed -i 's|device_ca_cert: "<ADD URI TO DEVICE CA CERTIFICATE HERE>"|device_ca_cert: "file:///etc/iotedge/epmcerts/iot-edge-device-ca-$(var.resourcevmname)-full-chain.cert.pem"|g' /etc/iotedge/config.yaml
                   echo "$device_ca_pk"
                   sudo sed -i "s/#   device_ca_pk:/  device_ca_pk:/g" /etc/iotedge/config.yaml
                   echo "device_ca_pk 1"
-                  sudo sed -i 's/device_ca_pk: "<ADD URI TO DEVICE CA PRIVATE KEY HERE>"/device_ca_pk: "file:///etc/iotedge/epmcerts/iot-edge-device-ca-$(var.resourcevmname).key.pem"/g' /etc/iotedge/config.yaml
+                  sudo sed -i 's|device_ca_pk: "<ADD URI TO DEVICE CA PRIVATE KEY HERE>"|device_ca_pk: "file:///etc/iotedge/epmcerts/iot-edge-device-ca-$(var.resourcevmname).key.pem"|g' /etc/iotedge/config.yaml
                   echo "$trusted_ca_certs"
                   sudo sed -i "s/#   trusted_ca_certs:/  trusted_ca_certs:/g" /etc/iotedge/config.yaml
                   echo "trusted_ca_certs 2"
-                  sudo sed -i 's/trusted_ca_certs: "<ADD URI TO TRUSTED CA CERTIFICATES HERE>"/trusted_ca_certs: "file:///etc/iotedge/epmcerts/azure-iot-test-only.root.ca.cert.pem"/g' /etc/iotedge/config.yaml
+                  sudo sed -i 's|trusted_ca_certs: "<ADD URI TO TRUSTED CA CERTIFICATES HERE>"|trusted_ca_certs: "file:///etc/iotedge/epmcerts/azure-iot-test-only.root.ca.cert.pem"|g' /etc/iotedge/config.yaml
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
