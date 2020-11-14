@@ -136,7 +136,6 @@ stages:
               runOptions: 'inline'
               inline: |
                 mkdir package-iot
-                mkdir storageedgehub
                 cd package-iot
                 wget https://packages.microsoft.com/centos/7/prod/moby-cli-3.0.10%2Bazure-0.x86_64.rpm
                 wget https://packages.microsoft.com/centos/7/prod/moby-engine-3.0.10%2Bazure-0.x86_64.rpm
@@ -244,9 +243,12 @@ stages:
             inputs:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
-              inline: |          
+              inline: |
+                  mkdir storageedgehub
                   echo "$(ConnectionStringIotEdge)"
                   sudo sed -i 's|"<ADD DEVICE CONNECTION STRING HERE>"|"$(ConnectionStringIotEdge)"|g' /etc/iotedge/config.yaml
+                  sudo sed -i 's|env: {}|env:\
+                  \  storageFolder: "/etc/iotedge/storage"|g' /etc/iotedge/config.yaml
               failOnStdErr: true
               readyTimeout: '20000'
             enabled: true
