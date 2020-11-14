@@ -247,8 +247,8 @@ stages:
                   sudo mkdir -p /etc/iotedge/storageedgehub
                   echo "$(ConnectionStringIotEdge)"
                   sudo sed -i 's|"<ADD DEVICE CONNECTION STRING HERE>"|"$(ConnectionStringIotEdge)"|g' /etc/iotedge/config.yaml
-                  sudo sed -i 's|env: {}|env:\
-                  \t/  storageFolder: "/etc/iotedge/storageedgehub"|g' /etc/iotedge/config.yaml
+                  sudo sed -i 's|  env: {}|  env:\
+                  \   storageFolder: "/etc/iotedge/storageedgehub"|g' /etc/iotedge/config.yaml
               failOnStdErr: true
               readyTimeout: '20000'
             enabled: true
