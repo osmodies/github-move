@@ -418,7 +418,7 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                iothubconnectionstring= "$(az iot hub connection-string show -n $(var.resourceiothubname) -o tsv)
+                iothubconnectionstring= "$(az iot hub connection-string show -n $(var.resourceiothubname) -o tsv)"
                 az iot dps linked-hub create --dps-name $(var.resourceiotdps) --resource-group $(var.resourcegroupname) --connection-string $iothubconnectionstring --location $(var.resourcegroupnamelocation)
             enabled: true
 
