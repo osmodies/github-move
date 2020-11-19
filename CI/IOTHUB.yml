@@ -431,13 +431,13 @@ stages:
               runOptions: 'inline'
               inline: |
                   sudo sed -i 's|# provisioning: \
-                  #   source: \
-                  #   global_endpoint:\
-                  #   scope_id: "<SCOPE_ID>"\
-                  #   attestation:\
-                  #     method: "x509"\
-                  #     identity_cert: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"\
-                  #     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"| provisioning:\
+                  \#   source: \
+                  \#   global_endpoint:\
+                  \#   scope_id: "<SCOPE_ID>"\
+                  \#   attestation:\
+                  \#     method: "x509"\
+                  \#     identity_cert: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"\
+                  \#     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"| provisioning:\
                   \   source:\
                   \   global_endpoint:\
                   \   scope_id: "$(idscopedps)"\
