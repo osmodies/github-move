@@ -440,7 +440,7 @@ stages:
                   #     registration_id: "<OPTIONAL REGISTRATION ID. LEAVE COMMENTED OUT TO REGISTER WITH CN OF identity_cert>"\
                   #     identity_cert: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"\
                   #     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"'
-                  Pattern2='# DPS X.509 provisioning configuration\
+                  pattern2='# DPS X.509 provisioning configuration\
                    provisioning:\
                      source: "dps"\
                      global_endpoint: "https://global.azure-devices-provisioning.net"\
