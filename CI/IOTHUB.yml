@@ -420,7 +420,37 @@ stages:
               inlineScript: |
                 iothubconnectionstring=$(az iot hub connection-string show -n $(var.resourceiothubname) -o tsv)
                 az iot dps linked-hub create --dps-name $(var.resourceiotdps) --resource-group $(var.resourcegroupname) --connection-string "$iothubconnectionstring" --location $(var.resourcegroupnamelocation)
+                idscopedps=$(az iot dps show --name exampledpsstpcepm --resource-group "EPM-NP-RG-UAT-IOTMedidoresEnergia" --query properties.idScope -o tsv)
+                echo "##vso[task.setvariable variable=idscopedps]$idscopedps"
             enabled: true
+          
+          - task: SSH@0
+            displayName: 'Configure IOTEDGE config.yml With Info DPS '
+            inputs:
+              sshEndpoint: 'vmiotedge'
+              runOptions: 'inline'
+              inline: |
+                  sudo sed -i 's|# provisioning: \
+                  #   source: \
+                  #   global_endpoint:\
+                  #   scope_id: "<SCOPE_ID>"\
+                  #   attestation:\
+                  #     method: "x509"\
+                  #     identity_cert: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"\
+                  #     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"||g' /etc/iotedge/config.yaml
+                  | provisioning:\
+                  \   source:\
+                  \   global_endpoint:\
+                  \   scope_id: "$(idscopedps)"\
+                  \   attestation:\
+                  \     method: "x509"\
+                  \     identity_cert: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname)-full-chain.cert.pem"\
+                  \     identity_pk: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname).key.pem"|g' /etc/iotedge/config.yaml
+              failOnStdErr: false
+              readyTimeout: '20000'
+            enabled: true
+
+
 
 
 - stage: DeleteIACIOT
