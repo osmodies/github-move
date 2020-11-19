@@ -437,8 +437,7 @@ stages:
                   #   attestation:\
                   #     method: "x509"\
                   #     identity_cert: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"\
-                  #     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"||g' /etc/iotedge/config.yaml
-                  | provisioning:\
+                  #     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"| provisioning:\
                   \   source:\
                   \   global_endpoint:\
                   \   scope_id: "$(idscopedps)"\
