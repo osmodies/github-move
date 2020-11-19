@@ -430,25 +430,27 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                  sudo sed -i 's|# DPS X.509 provisioning configuration\
-                  \# provisioning:\
-                  \#   source: "dps"\
-                  \#   global_endpoint: "https://global.azure-devices-provisioning.net"\
-                  \#   scope_id: "<SCOPE_ID>"\
-                  \#   attestation:\
-                  \#     method: "x509"\
+                  pattern1='# DPS X.509 provisioning configuration\
+                  # provisioning:\
+                  #   source: "dps"\
+                  #   global_endpoint: "https://global.azure-devices-provisioning.net"\
+                  #   scope_id: "<SCOPE_ID>"\
+                  #   attestation:\
+                  #     method: "x509"\
+                  #     registration_id: "<OPTIONAL REGISTRATION ID. LEAVE COMMENTED OUT TO REGISTER WITH CN OF identity_cert>"\
+                  #     identity_cert: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"\
+                  #     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"'
+                  Pattern2='# DPS X.509 provisioning configuration\
+                   provisioning:\
+                     source: "dps"\
+                     global_endpoint: "https://global.azure-devices-provisioning.net"\
+                     scope_id: "$(idscopedps)"\
+                     attestation:\
+                       method: "x509"\
                   \#     registration_id: "<OPTIONAL REGISTRATION ID. LEAVE COMMENTED OUT TO REGISTER WITH CN OF identity_cert>"\
-                  \#     identity_cert: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"\
-                  \#     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"|# DPS X.509 provisioning configuration\
-                  \ provisioning:\
-                  \   source: "dps"\
-                  \   global_endpoint: "https://global.azure-devices-provisioning.net"\
-                  \   scope_id: "$(idscopedps)"\
-                  \   attestation:\
-                  \     method: "x509"\
-                  \#     registration_id: "<OPTIONAL REGISTRATION ID. LEAVE COMMENTED OUT TO REGISTER WITH CN OF identity_cert>"\
-                  \     identity_cert: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname)-full-chain.cert.pem"\
-                  \     identity_pk: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname).key.pem"|g' /etc/iotedge/config.yaml
+                       identity_cert: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname)-full-chain.cert.pem"\
+                       identity_pk: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname).key.pem"'
+                  sudo sed -i 's|"$pattern1"|"$pattern2"|g' /etc/iotedge/config.yaml
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
