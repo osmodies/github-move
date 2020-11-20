@@ -430,9 +430,6 @@ stages:
               readyTimeout: '20000'
             enabled: true
 
-
-
-
 - stage: DeleteIACIOT
   displayName: 'DeleteIACIOT'
   condition: eq(variables['DeleteIAC'], 'Yes')
