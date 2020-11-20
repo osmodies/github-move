@@ -418,7 +418,7 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                  sed -i '/#     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY PRIVATE KEY>"/ a\ provisioning:\
+                  sudo sed -i '/#     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY PRIVATE KEY>"/ a\ provisioning:\
                   \   source: "dps"\
                   \   global_endpoint: "https://global.azure-devices-provisioning.net"\
                   \   scope_id: "$(idscopedps)"\
