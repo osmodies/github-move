@@ -418,15 +418,14 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                  sudo sed -i 's|#     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"|#     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY CERTIFICATE>"\
-                  \ provisioning:\
+                  sed -i '/#     identity_pk: "<REQUIRED URI TO DEVICE IDENTITY PRIVATE KEY>"/ a\ provisioning:\
                   \   source: "dps"\
                   \   global_endpoint: "https://global.azure-devices-provisioning.net"\
                   \   scope_id: "$(idscopedps)"\
                   \   attestation:\
                   \     method: "x509"\
                   \     identity_cert: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname)-full-chain.cert.pem"\
-                  \     identity_pk: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname).key.pem"|g' /etc/iotedge/config.yaml
+                  \     identity_pk: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname).key.pem"' /etc/iotedge/config.yaml
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
