@@ -393,7 +393,6 @@ stages:
               sshEndpoint: 'vmiotedge'
               runOptions: 'inline'
               inline: |
-                  cd package-iot
                   sudo iotedge check
               failOnStdErr: false
               readyTimeout: '20000'
@@ -408,7 +407,7 @@ stages:
               inlineScript: |
                 iothubconnectionstring=$(az iot hub connection-string show -n $(var.resourceiothubname) -o tsv)
                 az iot dps linked-hub create --dps-name $(var.resourceiotdps) --resource-group $(var.resourcegroupname) --connection-string "$iothubconnectionstring" --location $(var.resourcegroupnamelocation)
-                idscopedps=$(az iot dps show --name exampledpsstpcepm --resource-group "EPM-NP-RG-UAT-IOTMedidoresEnergia" --query properties.idScope -o tsv)
+                idscopedps=$(az iot dps show --name $(var.resourceiotdps) --resource-group "$(var.resourcegroupname)" --query properties.idScope -o tsv)
                 echo "##vso[task.setvariable variable=idscopedps]$idscopedps"
             enabled: true
           
@@ -426,9 +425,22 @@ stages:
                   \     method: "x509"\
                   \     identity_cert: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname)-full-chain.cert.pem"\
                   \     identity_pk: "file:///etc/iotedge/epmcerts/iot-edge-device-identity-$(var.resourcevmname).key.pem"' /etc/iotedge/config.yaml
+                  sudo systemctl restart iotedge
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
+          
+          - task: AzureCLI@2
+            displayName: 'Add Individual Enrollment '
+            inputs:
+              azureSubscription: '$(var.serviceconnection2)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                iothubconnectionstring=$(az iot hub connection-string show -n $(var.resourceiothubname) -o tsv)
+                az iot dps enrollment create -g $(var.resourcegroupname) --dps-name $(var.resourceiotdps) --enrollment-id {enrollment_id} --attestation-type x509 --certificate-path /certificates/Certificate.pem --provisioning-status disabled --iot-hub-host-name {iothub_host_name} --initial-twin-properties "{'location':{'region':'US'}}" --device-id {device_id}
+                echo "##vso[task.setvariable variable=idscopedps]$idscopedps"
+            enabled: false
 
 - stage: DeleteIACIOT
   displayName: 'DeleteIACIOT'
