@@ -429,7 +429,10 @@ stages:
               failOnStdErr: false
               readyTimeout: '20000'
             enabled: true
-          
+          - task: DownloadSecureFile@1
+            name: 'iotedgedeviceidentitycert'
+            inputs:
+              secureFile: 'iot-edge-device-identity-machinestpcepm.cert.pem'
           - task: AzureCLI@2
             displayName: 'Add Individual Enrollment '
             inputs:
@@ -437,7 +440,9 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                az iot dps enrollment create -g $(var.resourcegroupname) --dps-name $(var.resourceiotdps) --enrollment-id $(var.enrollment_id) --attestation-type x509 --iot-hub-host-name "$(var.resourceiothubname).azure-devices.net" --device-id $(var.resourceiothubname)
+                  az iot dps enrollment create -g $(var.resourcegroupname) --dps-name $(var.resourceiotdps) \
+                  --enrollment-id $(var.enrollment_id) --attestation-type x509 --iot-hub-host-name "$(var.resourceiothubname).azure-devices.net" \
+                  --device-id $(var.resourceiothubname) ----certificate-path $(iotedgedeviceidentitycert.secureFilePath)
             enabled: true
 
 - stage: DeleteIACIOT
