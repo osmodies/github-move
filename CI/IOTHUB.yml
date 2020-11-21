@@ -28,7 +28,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: self
+          - checkout: none
           - task: replacetokens@3
             inputs:
               targetFiles: '**/*.tf'
@@ -40,13 +40,13 @@ stages:
               tokenSuffix: '__'
               useLegacyPattern: false
               enableTelemetry: true
-            enabled: true
+            enabled: false
 
           - task: TerraformInstaller@0
             displayName: 'terraform installer'
             inputs:
               terraformVersion: '0.13.5'
-            enabled: true
+            enabled: false
           - task: TerraformTaskV1@0
             displayName: 'Terraform init'
             inputs:
@@ -58,14 +58,14 @@ stages:
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount)'
               backendAzureRmContainerName: '$(var.terraformContainername)'
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: true
+            enabled: false
           - task: TerraformTaskV1@0
             displayName: 'Terraform validate'
             inputs:
               provider: 'azurerm'
               command: 'validate'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
-            enabled: true
+            enabled: false
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform Plan'
@@ -74,7 +74,7 @@ stages:
               command: 'plan'
               workingDirectory: '$(System.DefaultWorkingDirectory)/Terraform'
               environmentServiceNameAzureRM: '$(var.serviceconnection2)'
-            enabled: true
+            enabled: false
 
           - task: TerraformTaskV1@0
             displayName: 'Terraform : apply -auto-approve'
@@ -87,7 +87,7 @@ stages:
               backendAzureRmStorageAccountName: '$(var.terraformstorageaccount) '
               backendAzureRmContainerName: $(var.terraformContainername)
               backendAzureRmKey: '$(var.terraformstoragekey)'
-            enabled: true
+            enabled: false
 
 - stage: Installmachine
   displayName: 'Install Machine Components'
@@ -440,6 +440,8 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
+                  az config set extension.use_dynamic_install=yes_without_prompt
+                  az extension add --upgrade -n azure-iot
                   az iot dps enrollment create -g $(var.resourcegroupname) --dps-name $(var.resourceiotdps) \
                   --enrollment-id $(var.enrollment_id) --attestation-type x509 --iot-hub-host-name "$(var.resourceiothubname).azure-devices.net" \
                   --device-id $(var.resourceiothubname) ----certificate-path $(iotedgedeviceidentitycert.secureFilePath)
