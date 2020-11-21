@@ -444,7 +444,7 @@ stages:
                   az extension add --upgrade -n azure-iot
                   az iot dps enrollment create -g $(var.resourcegroupname) --dps-name $(var.resourceiotdps) \
                   --enrollment-id $(var.enrollment_id) --attestation-type x509 --iot-hub-host-name "$(var.resourceiothubname).azure-devices.net" \
-                  --device-id $(var.resourceiothubname) ----certificate-path $(iotedgedeviceidentitycert.secureFilePath)
+                  --device-id $(var.resourceiothubname) --certificate-path $(iotedgedeviceidentitycert.secureFilePath)
             enabled: true
 
 - stage: DeleteIACIOT
