@@ -437,10 +437,8 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                iothubconnectionstring=$(az iot hub connection-string show -n $(var.resourceiothubname) -o tsv)
-                az iot dps enrollment create -g $(var.resourcegroupname) --dps-name $(var.resourceiotdps) --enrollment-id {enrollment_id} --attestation-type x509 --certificate-path /certificates/Certificate.pem --provisioning-status disabled --iot-hub-host-name {iothub_host_name} --initial-twin-properties "{'location':{'region':'US'}}" --device-id {device_id}
-                echo "##vso[task.setvariable variable=idscopedps]$idscopedps"
-            enabled: false
+                az iot dps enrollment create -g $(var.resourcegroupname) --dps-name $(var.resourceiotdps) --enrollment-id $(var.enrollment_id) --attestation-type x509 --iot-hub-host-name "$(var.resourceiothubname).azure-devices.net" --device-id $(var.resourceiothubname)
+            enabled: true
 
 - stage: DeleteIACIOT
   displayName: 'DeleteIACIOT'
