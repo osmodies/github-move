@@ -399,12 +399,14 @@ stages:
             enabled: false
 
           - task: AzureCLI@2
-            displayName: 'Add Link iothub to  DPS'
+            displayName: 'Add Link iothub to DPS'
             inputs:
               azureSubscription: '$(var.serviceconnection2)'
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
+                az config set extension.use_dynamic_install=yes_without_prompt
+                az extension add --upgrade -n azure-iot
                 iothubconnectionstring=$(az iot hub connection-string show -n $(var.resourceiothubname) -o tsv)
                 az iot dps linked-hub create --dps-name $(var.resourceiotdps) --resource-group $(var.resourcegroupname) --connection-string "$iothubconnectionstring" --location $(var.resourcegroupnamelocation)
                 idscopedps=$(az iot dps show --name $(var.resourceiotdps) --resource-group "$(var.resourcegroupname)" --query properties.idScope -o tsv)
