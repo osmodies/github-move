@@ -435,6 +435,12 @@ stages:
             name: 'iotedgedeviceidentitycert'
             inputs:
               secureFile: 'iot-edge-device-identity-machinestpcepm.cert.pem'
+          - task: PowerShell@2
+            displayName: 'Copia de certificado a agente'
+            inputs:
+              targetType: 'inline'
+              script: 'scp $(var.resourcevmadminuser)@$(var.resourcevmipprivate):~/epmcert/certs/iot-edge-device-identity-$(var.resourcevmname).cert.pem $(System.DefaultWorkingDirectory)'
+            enabled: false
           - task: AzureCLI@2
             displayName: 'Add Individual Enrollment '
             inputs:
