@@ -112,7 +112,7 @@ stages:
                 sudo subscription-manager repos --enable rhel-7-server-optional-rpms --enable rhel-7-server-extras-rpms --enable rhel-7-server-rpms
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: true
+            enabled: false
 
           - task: SSH@0
             displayName: 'Install Prerequisites rhel7'
