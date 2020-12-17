@@ -396,7 +396,7 @@ stages:
                   sudo iotedge check
               failOnStdErr: false
               readyTimeout: '20000'
-            enabled: true
+            enabled: false
 
           - task: AzureCLI@2
             displayName: 'Add Link iothub to DPS'
